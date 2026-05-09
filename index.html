@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>NEXA10.com — Managed AI Trading | We Trade. You Earn.</title>
+<title>NEXA10.com — AI Trader | Trade Smart. Grow Fast. With AI.</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
@@ -91,52 +91,67 @@ nav a:hover::after{width:100%;}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:12px;margin:-12px -8px -12px 0;min-width:44px;min-height:44px;justify-content:center;align-items:center;-webkit-tap-highlight-color:transparent;}
 .hamburger span{width:24px;height:2px;background:var(--neon-blue);border-radius:2px;transition:.3s;}
 
-/* ── HERO ── */
+/* ── HERO (full-viewport split — desktop grid, mobile stack) ── */
 .hero{
   position:relative;z-index:1;
   min-height:100vh;
   min-height:100dvh;
-  display:flex;align-items:center;
-  padding:max(120px, calc(4rem + env(safe-area-inset-top, 0px))) max(5%, env(safe-area-inset-right, 0px)) 80px max(5%, env(safe-area-inset-left, 0px));
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(260px,min(44vw,640px));
+  align-items:center;
+  column-gap:clamp(20px,4vw,56px);
+  row-gap:28px;
+  padding:calc(72px + env(safe-area-inset-top,0px)) max(4%,env(safe-area-inset-right,0px)) clamp(36px,5vh,56px) max(4%,env(safe-area-inset-left,0px));
   overflow:hidden;
 }
+.hero-bg,
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+}
 .hero-bg{
-  position:absolute;inset:0;
   background:radial-gradient(ellipse 80% 60% at 60% 50%, rgba(139,92,246,0.12) 0%, transparent 70%),
              radial-gradient(ellipse 50% 40% at 20% 30%, rgba(0,212,255,0.08) 0%, transparent 60%),
              radial-gradient(ellipse 60% 50% at 80% 80%, rgba(236,72,153,0.06) 0%, transparent 60%),
              var(--dark-bg);
 }
 .hero-grid{
-  position:absolute;inset:0;
   background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),
                    linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);
   background-size:60px 60px;
 }
-.hero-content{position:relative;z-index:2;max-width:600px;animation:fadeUp .9s ease both;}
+.hero-content{
+  position:relative;z-index:2;
+  grid-column:1;
+  grid-row:1;
+  align-self:center;
+  max-width:36rem;
+  width:100%;
+  animation:fadeUp .9s ease both;
+}
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
   padding:6px 16px;border:1px solid rgba(0,212,255,0.3);
-  border-radius:50px;margin-bottom:28px;
+  border-radius:50px;margin-bottom:18px;
   background:rgba(0,212,255,0.05);
-  font-size:0.8rem;color:var(--neon-blue);letter-spacing:2px;text-transform:uppercase;
+  font-size:0.78rem;color:var(--neon-blue);letter-spacing:2px;text-transform:uppercase;
 }
 .badge-dot{width:6px;height:6px;background:#00ff88;border-radius:50%;animation:pulse 2s infinite;}
 .hero h1{
   font-family:'Orbitron',sans-serif;
-  font-size:clamp(2.2rem,5vw,4rem);
+  font-size:clamp(1.85rem,3.6vw,3.35rem);
   font-weight:900;
-  line-height:1.1;
-  margin-bottom:24px;
+  line-height:1.08;
+  margin-bottom:18px;
 }
 .hero h1 span{background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .hero p{
-  font-size:1.1rem;color:var(--text-muted);line-height:1.7;margin-bottom:40px;font-weight:400;
+  font-size:clamp(0.95rem,1.2vw,1.08rem);color:var(--text-muted);line-height:1.6;margin-bottom:26px;font-weight:400;
+  max-width:32rem;
 }
-.hero-cta{display:flex;gap:16px;flex-wrap:wrap;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
 .btn-big{
-  padding:16px 36px;font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;border-radius:8px;cursor:pointer;border:none;
+  padding:14px 28px;font-family:'Orbitron',sans-serif;font-size:0.8rem;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;border-radius:8px;cursor:pointer;border:none;
   transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:10px;
 }
 .btn-big-primary{background:var(--grad-main);color:#fff;}
@@ -144,24 +159,30 @@ nav a:hover::after{width:100%;}
 .btn-big-outline{background:transparent;border:1px solid rgba(0,212,255,0.4);color:var(--neon-blue);}
 .btn-big-outline:hover{background:rgba(0,212,255,0.08);box-shadow:0 0 30px rgba(0,212,255,0.2);}
 
-.hero-stats{display:flex;gap:40px;margin-top:56px;flex-wrap:wrap;}
-.stat{border-left:2px solid var(--neon-blue);padding-left:16px;}
-.stat-num{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.stat-label{font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
+.hero-stats{display:flex;gap:clamp(20px,4vw,40px);margin-top:28px;flex-wrap:wrap;}
+.stat{border-left:2px solid var(--neon-blue);padding-left:14px;}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:clamp(1.45rem,2.5vw,1.75rem);font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-label{font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
 
 .hero-visual{
-  position:absolute;right:4%;top:50%;transform:translateY(-50%);
-  width:clamp(300px,45%,640px);z-index:2;
-  animation:floatAnim 6s ease-in-out infinite;
+  position:relative;z-index:2;
+  grid-column:2;
+  grid-row:1;
+  align-self:center;
+  justify-self:end;
+  width:100%;
+  max-width:640px;
+  margin:0;
+  animation:heroFloat 6s ease-in-out infinite;
 }
 .hero-visual img{width:100%;max-width:100%;height:auto;display:block;border-radius:16px;box-shadow:0 0 60px rgba(139,92,246,0.35),0 0 120px rgba(0,212,255,0.15);}
 .hero-visual-ring{
-  position:absolute;inset:-20px;
+  position:absolute;inset:-16px;
   border:1px solid rgba(0,212,255,0.15);border-radius:20px;
   animation:ringPulse 3s ease-in-out infinite;
 }
 .hero-visual-ring2{
-  position:absolute;inset:-40px;
+  position:absolute;inset:-32px;
   border:1px solid rgba(139,92,246,0.08);border-radius:24px;
   animation:ringPulse 3s ease-in-out infinite .5s;
 }
@@ -363,7 +384,7 @@ footer{
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-@keyframes floatAnim{0%,100%{transform:translateY(-50%) translateX(0);}50%{transform:translateY(calc(-50% - 20px)) translateX(5px);}}
+@keyframes heroFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.5);}}
 @keyframes ringPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
 @keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
@@ -378,11 +399,11 @@ footer{
 
 /* ── RESPONSIVE (mobile · tablet · desktop) ── */
 @media(max-width:1200px){
-  .hero-visual{width:min(46%,420px);right:2%;}
   nav{gap:22px;}
+  .hero{grid-template-columns:minmax(0,1fr) minmax(240px,40vw);column-gap:20px;}
 }
 @media(max-width:1024px){
-  .hero-visual{width:40%;right:2%;}
+  .hero{grid-template-columns:minmax(0,1fr) minmax(220px,38vw);}
   .footer-grid{grid-template-columns:1fr 1fr;}
   .steps-grid::before{display:none;}
   .features-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
@@ -397,6 +418,7 @@ footer{
   nav{display:none;}
   .hamburger{display:flex;}
   .hero{
+    display:flex;
     flex-direction:column;
     text-align:center;
     align-items:center;
@@ -404,12 +426,18 @@ footer{
     padding-top:max(5.5rem, calc(3.5rem + env(safe-area-inset-top,0px)));
     padding-bottom:clamp(40px,8vw,60px);
   }
-  .hero-content{max-width:100%;width:100%;}
+  .hero-content{
+    max-width:100%;
+    width:100%;
+    order:1;
+  }
   .hero h1{font-size:clamp(1.65rem,6.5vw,2.5rem);}
   .hero p{font-size:clamp(0.95rem,3.3vw,1.1rem);margin-left:auto;margin-right:auto;max-width:36rem;}
   .hero-visual{
-    position:relative;top:auto;right:auto;transform:none;
-    width:100%;max-width:min(400px,92vw);margin:32px auto 0;
+    order:2;
+    width:100%;
+    max-width:min(400px,92vw);
+    margin:28px auto 0;
     animation:none;
   }
   .hero-stats{justify-content:center;gap:clamp(20px,5vw,40px);margin-top:40px;}
@@ -859,13 +887,13 @@ body.auth-open{overflow:hidden;}
   <a href="#testimonials">Reviews</a>
   <a href="#contact">Contact</a>
   <a href="#login">Sign In</a>
-  <a href="#signup">Invest</a>
+  <a href="#signup">Start Free</a>
 </div>
 
 <!-- HEADER -->
 <header>
   <div class="logo-wrap">
-    <img class="logo-img" src="logo.png" alt="NEXA10 — Managed AI Trading" width="220" height="44" decoding="async"/>
+    <img class="logo-img" src="logo.png" alt="NEXA10 — AI Trader" width="220" height="44" decoding="async"/>
   </div>
   <nav>
     <a href="#features">Features</a>
@@ -876,7 +904,7 @@ body.auth-open{overflow:hidden;}
   </nav>
   <div class="header-btns">
     <a href="#login" class="btn-ghost">Sign In</a>
-    <a href="#signup" class="btn-primary">Invest Now →</a>
+    <a href="#signup" class="btn-primary">Start Free →</a>
   </div>
   <div class="hamburger" onclick="openMobileNav()">
     <span></span><span></span><span></span>
@@ -890,20 +918,19 @@ body.auth-open{overflow:hidden;}
   <div class="hero-content">
     <div class="hero-badge">
       <span class="badge-dot"></span>
-      LIVE — Managed AI Trading
+      LIVE — AI SIGNALS ACTIVE
     </div>
-    <h1>We <span>Trade</span> the Markets<br/>You <span>Earn</span> the Returns<br/>Hands-Free</h1>
-    <p>You invest your capital with NEXA10. Our AI-driven trading desk manages Forex, Crypto, and Stocks on your behalf — no charts to read, no orders to place yourself. We aim to grow your investment; you track performance and withdraw according to your plan.</p>
+    <h1>Trade <span>Smarter</span><br/>Grow <span>Faster</span><br/>With <span>AI Power</span></h1>
+    <p>NEXA10 delivers real-time AI-powered trading signals, automated strategies, and deep market intelligence — so you can profit with precision, not guesswork.</p>
     <div class="hero-cta">
-      <a href="#signup" class="btn-big btn-big-primary">🚀 Start Investing</a>
-      <a href="#how" class="btn-big btn-big-outline">▶ How It Works</a>
+      <a href="#signup" class="btn-big btn-big-primary">🚀 Start Trading Now</a>
+      <a href="#how" class="btn-big btn-big-outline">▶ Watch Demo</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Investor Partners</div></div>
-      <div class="stat"><div class="stat-num">94%</div><div class="stat-label">AI Model Accuracy</div></div>
-      <div class="stat"><div class="stat-num">$8M+</div><div class="stat-label">Investor Profits*</div></div>
+      <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Active Traders</div></div>
+      <div class="stat"><div class="stat-num">94%</div><div class="stat-label">Signal Accuracy</div></div>
+      <div class="stat"><div class="stat-num">$8M+</div><div class="stat-label">Profits Generated</div></div>
     </div>
-    <p style="margin-top:20px;font-size:0.75rem;color:var(--text-muted);max-width:520px;line-height:1.5;">*Past performance is not indicative of future results. Trading and investing involve risk of loss.</p>
   </div>
   <div class="hero-visual">
     <div class="hero-visual-ring"></div>
@@ -1136,7 +1163,7 @@ body.auth-open{overflow:hidden;}
     </div>
     <div style="text-align:center;">
       <div style="font-family:Orbitron,sans-serif;font-size:1.6rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">12K+</div>
-      <div style="color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Investor Partners</div>
+      <div style="color:var(--text-muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">Active Traders</div>
     </div>
   </div>
 </section>
