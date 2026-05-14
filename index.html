@@ -1736,18 +1736,24 @@ function handleLogin(){
   if(pw.length<8){document.getElementById('loginPwErr').classList.add('show');ok=false;}
   if(!ok)return;
   btn.classList.add('loading');btn.textContent='Signing in...';
-  setTimeout(()=>{btn.classList.remove('loading');btn.textContent='Sign In to NEXA10 →';
+  setTimeout(()=>{
+    btn.classList.remove('loading');
     btn.style.background='linear-gradient(135deg,#00ff88,#00d4ff)';
-    btn.textContent='✓ Welcome Back! Redirecting...';},1800);
+    btn.textContent='✓ Welcome Back! Redirecting...';
+    setTimeout(()=>{window.location.href='dashboard.html';},900);
+  },1500);
 }
 function handleSignup(){
   const agree=document.getElementById('agreeTerms').checked;
   const btn=document.getElementById('signupBtn');
   if(!agree){alert('Please agree to the Terms of Service to continue.');return;}
   btn.classList.add('loading');btn.textContent='Creating Account...';
-  setTimeout(()=>{btn.classList.remove('loading');
+  setTimeout(()=>{
+    btn.classList.remove('loading');
     btn.style.background='linear-gradient(135deg,#00ff88,#00d4ff)';
-    btn.textContent='✓ Account Created! Redirecting...';},1800);
+    btn.textContent='✓ Account Created! Redirecting...';
+    setTimeout(()=>{window.location.href='dashboard.html';},900);
+  },1500);
 }
 let resetStep=1;
 function goToStep(n){
