@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#020408"/>
+<title>NEXA10 — GPU Plans</title>
+<link rel="icon" type="image/png" href="logo.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --neon-blue:#00d4ff;
+  --neon-purple:#8b5cf6;
+  --neon-green:#00ff88;
+  --neon-amber:#ffaa00;
+  --dark-bg:#020408;
+  --dark-card:#080d18;
+  --dark-card2:#0a1020;
+  --border-dim:rgba(0,212,255,0.12);
+  --border-glow:rgba(0,212,255,0.2);
+  --text-primary:#f0f4ff;
+  --text-muted:#8899bb;
+  --text-dim:#4a5878;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:var(--dark-bg);
+  color:var(--text-primary);
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#020408;}
+::-webkit-scrollbar-thumb{background:var(--neon-blue);border-radius:2px;}
+
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;}
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);
+  background-size:50px 50px;
+  mask-image:linear-gradient(180deg,#000 0%,transparent 95%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 95%);
+}
+
+.page-top{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:12px;
+  padding:max(14px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px));
+  background:rgba(2,4,8,0.9);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border-dim);
+}
+.back-btn{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(8,13,24,0.8);
+  border:1px solid var(--border-dim);
+  color:var(--text-muted);
+  text-decoration:none;
+  transition:.25s;
+  flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.back-btn:hover,.back-btn:focus-visible{
+  color:var(--neon-blue);
+  border-color:var(--border-glow);
+  box-shadow:0 0 16px rgba(0,212,255,0.12);
+}
+.back-btn svg{width:22px;height:22px;}
+.page-title-wrap{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.page-title-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(139,92,246,0.12));
+  border:1px solid var(--border-glow);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--neon-blue);
+  flex-shrink:0;
+  box-shadow:0 0 20px rgba(0,212,255,0.12);
+}
+.page-title-icon svg{width:22px;height:22px;}
+.page-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.05rem,4vw,1.25rem);
+  font-weight:700;
+  letter-spacing:1px;
+  white-space:nowrap;
+}
+.calc-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--border-dim);
+  background:rgba(8,13,24,0.8);
+  color:var(--text-muted);
+  font-family:'Rajdhani',sans-serif;
+  font-size:0.88rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:.25s;
+  flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.calc-btn svg{width:18px;height:18px;}
+.calc-btn:hover,.calc-btn:focus-visible{
+  color:var(--neon-blue);
+  border-color:var(--border-glow);
+}
+
+.invest-main{
+  position:relative;z-index:1;
+  max-width:720px;
+  margin:0 auto;
+  padding:20px max(16px,env(safe-area-inset-right,0px)) max(32px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+}
+
+/* ── PLAN CARD ── */
+.plan-card{
+  background:var(--dark-card);
+  border:1px solid var(--border-dim);
+  border-radius:16px;
+  padding:clamp(20px,4vw,26px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 1px rgba(0,212,255,0.12);
+}
+
+.plan-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:22px;
+}
+.plan-name-block h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.5rem,5vw,1.85rem);
+  font-weight:900;
+  letter-spacing:2px;
+  line-height:1.1;
+}
+.plan-name-block p{
+  margin-top:6px;
+  font-size:clamp(0.88rem,2.5vw,0.95rem);
+  color:var(--text-muted);
+}
+
+.badge-active{
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  background:rgba(0,255,136,0.12);
+  border:1px solid rgba(0,255,136,0.4);
+  color:var(--neon-green);
+  flex-shrink:0;
+  box-shadow:0 0 16px rgba(0,255,136,0.15);
+}
+
+.stats-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:12px;
+}
+.stat-box{
+  background:var(--dark-card2);
+  border:1px solid var(--border-dim);
+  border-radius:12px;
+  padding:16px;
+}
+.stat-box-head{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:10px;
+}
+.stat-box-icon{
+  width:28px;height:28px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+}
+.stat-box-icon svg{width:16px;height:16px;}
+.stat-box--profit .stat-box-icon{
+  background:rgba(0,212,255,0.1);
+  color:var(--neon-blue);
+}
+.stat-box--duration .stat-box-icon{
+  background:rgba(139,92,246,0.12);
+  color:var(--neon-purple);
+}
+.stat-label{
+  font-size:0.82rem;
+  color:var(--text-muted);
+  font-weight:600;
+}
+.stat-value{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.1rem,3.5vw,1.25rem);
+  font-weight:700;
+}
+.stat-box--profit .stat-value{color:var(--neon-green);}
+.stat-box--duration .stat-value{color:var(--text-primary);}
+
+.range-box{
+  background:var(--dark-card2);
+  border:1px solid var(--border-dim);
+  border-radius:12px;
+  padding:16px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:22px;
+}
+.range-left{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  flex:1;
+  min-width:0;
+}
+.range-icon{
+  width:36px;height:36px;
+  border-radius:10px;
+  background:rgba(0,212,255,0.1);
+  border:1px solid rgba(0,212,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--neon-blue);
+  flex-shrink:0;
+}
+.range-icon svg{width:18px;height:18px;}
+.range-label{
+  font-size:0.82rem;
+  color:var(--text-muted);
+  font-weight:600;
+  margin-bottom:6px;
+}
+.range-value{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(0.95rem,3vw,1.1rem);
+  font-weight:700;
+  word-break:break-word;
+}
+
+.badge-hourly{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 12px;
+  border-radius:20px;
+  background:rgba(0,212,255,0.08);
+  border:1px solid rgba(0,212,255,0.25);
+  color:var(--neon-blue);
+  font-size:0.78rem;
+  font-weight:700;
+  letter-spacing:0.5px;
+  flex-shrink:0;
+}
+.badge-hourly svg{width:14px;height:14px;}
+
+.btn-invest{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:16px 24px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#00d4ff,#0099cc);
+  color:#020408;
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(0.95rem,3vw,1.05rem);
+  font-weight:700;
+  letter-spacing:1px;
+  cursor:pointer;
+  box-shadow:0 0 32px rgba(0,212,255,0.45),0 8px 24px rgba(0,0,0,0.3);
+  transition:transform .2s,box-shadow .25s;
+  min-height:52px;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-invest svg{width:20px;height:20px;}
+.btn-invest:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 40px rgba(0,212,255,0.55),0 12px 28px rgba(0,0,0,0.35);
+}
+.btn-invest:active{transform:translateY(0);}
+
+/* ── CALCULATOR PANEL ── */
+.calc-panel{
+  margin-top:16px;
+  background:var(--dark-card);
+  border:1px solid var(--border-dim);
+  border-radius:16px;
+  padding:20px;
+  display:none;
+  box-shadow:0 12px 40px rgba(0,0,0,0.35);
+}
+.calc-panel.open{display:block;}
+.calc-panel h3{
+  font-family:'Orbitron',sans-serif;
+  font-size:1rem;
+  margin-bottom:16px;
+  color:var(--neon-blue);
+}
+.calc-field{margin-bottom:14px;}
+.calc-field label{
+  display:block;
+  font-size:0.82rem;
+  color:var(--text-muted);
+  margin-bottom:6px;
+  font-weight:600;
+}
+.calc-field input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid var(--border-dim);
+  background:var(--dark-card2);
+  color:var(--text-primary);
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.05rem;
+  font-weight:600;
+}
+.calc-field input:focus{
+  outline:none;
+  border-color:var(--border-glow);
+  box-shadow:0 0 0 2px rgba(0,212,255,0.15);
+}
+.calc-result{
+  margin-top:16px;
+  padding:14px;
+  border-radius:10px;
+  background:rgba(0,255,136,0.06);
+  border:1px solid rgba(0,255,136,0.2);
+  text-align:center;
+}
+.calc-result-label{font-size:0.82rem;color:var(--text-muted);}
+.calc-result-value{
+  font-family:'Orbitron',sans-serif;
+  font-size:1.35rem;
+  font-weight:700;
+  color:var(--neon-green);
+  margin-top:6px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles" aria-hidden="true"></canvas>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<header class="page-top">
+  <a href="dashboard.html" class="back-btn" aria-label="Back to dashboard">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </a>
+  <div class="page-title-wrap">
+    <span class="page-title-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="4" width="16" height="16" rx="2"/>
+        <rect x="9" y="9" width="6" height="6"/>
+        <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/>
+      </svg>
+    </span>
+    <h1 class="page-title">GPU Plans</h1>
+  </div>
+  <button type="button" class="calc-btn" id="calcToggle" aria-expanded="false" aria-controls="calcPanel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="4" y="2" width="16" height="20" rx="2"/>
+      <path d="M8 6h8M8 10h8M8 14h4M8 18h4"/>
+    </svg>
+    Calculator
+  </button>
+</header>
+
+<main class="invest-main">
+  <article class="plan-card" aria-label="GPT investment plan">
+    <div class="plan-top">
+      <div class="plan-name-block">
+        <h2>GPT</h2>
+        <p>A plan to start a future</p>
+      </div>
+      <span class="badge-active">Active</span>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box stat-box--profit">
+        <div class="stat-box-head">
+          <span class="stat-box-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17l6-6 4 4 8-8"/>
+              <path d="M14 7h7v7"/>
+            </svg>
+          </span>
+          <span class="stat-label">Profit</span>
+        </div>
+        <div class="stat-value" id="planProfit">0.15%</div>
+      </div>
+      <div class="stat-box stat-box--duration">
+        <div class="stat-box-head">
+          <span class="stat-box-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+          </span>
+          <span class="stat-label">Duration</span>
+        </div>
+        <div class="stat-value">2160 hours</div>
+      </div>
+    </div>
+
+    <div class="range-box">
+      <div class="range-left">
+        <span class="range-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </span>
+        <div>
+          <div class="range-label">Investment Range</div>
+          <div class="range-value">$1 – $10,000,000</div>
+        </div>
+      </div>
+      <span class="badge-hourly">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        Hourly
+      </span>
+    </div>
+
+    <button type="button" class="btn-invest" id="investNowBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="2"/>
+        <rect x="9" y="9" width="6" height="6"/>
+        <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/>
+      </svg>
+      Invest Now
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </button>
+  </article>
+
+  <div class="calc-panel" id="calcPanel" role="region" aria-label="Investment calculator" hidden>
+    <h3>Estimate Returns</h3>
+    <div class="calc-field">
+      <label for="calcAmount">Investment amount ($)</label>
+      <input type="number" id="calcAmount" min="1" max="10000000" value="100" step="1"/>
+    </div>
+    <div class="calc-field">
+      <label for="calcHours">Hours (max 2160)</label>
+      <input type="number" id="calcHours" min="1" max="2160" value="24" step="1"/>
+    </div>
+    <div class="calc-result">
+      <div class="calc-result-label">Estimated profit (0.15% hourly)</div>
+      <div class="calc-result-value" id="calcResult">$0.36</div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  const PROFIT_RATE=0.0015;
+  const profitPct=0.15;
+
+  const calcToggle=document.getElementById('calcToggle');
+  const calcPanel=document.getElementById('calcPanel');
+  const calcAmount=document.getElementById('calcAmount');
+  const calcHours=document.getElementById('calcHours');
+  const calcResult=document.getElementById('calcResult');
+
+  function updateCalc(){
+    const amount=Math.max(0,parseFloat(calcAmount.value)||0);
+    const hours=Math.min(2160,Math.max(0,parseFloat(calcHours.value)||0));
+    const profit=amount*PROFIT_RATE*hours;
+    calcResult.textContent='$'+profit.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  calcToggle.addEventListener('click',()=>{
+    const open=calcPanel.classList.toggle('open');
+    calcPanel.hidden=!open;
+    calcToggle.setAttribute('aria-expanded',open?'true':'false');
+    if(open) updateCalc();
+  });
+
+  calcAmount.addEventListener('input',updateCalc);
+  calcHours.addEventListener('input',updateCalc);
+  updateCalc();
+
+  document.getElementById('investNowBtn').addEventListener('click',()=>{
+    const amt=prompt('Enter investment amount ($1 – $10,000,000):','100');
+    if(amt===null) return;
+    const n=parseFloat(amt);
+    if(isNaN(n)||n<1||n>10000000){
+      alert('Please enter an amount between $1 and $10,000,000.');
+      return;
+    }
+    alert('Investment request for $'+n.toLocaleString()+' on GPT plan submitted. Connect your backend to process this.');
+  });
+
+  const canvas=document.getElementById('particles');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  for(let i=0;i<50;i++){
+    pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.2+.3,a:Math.random()*.35+.08});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,212,255,'+p.a+')';ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
