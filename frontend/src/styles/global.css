@@ -1,0 +1,17 @@
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:#020408;
+  color:#f0f4ff;
+  overflow-x:hidden;
+  min-height:100vh;
+  min-height:100dvh;
+}
+body.auth-open{overflow:hidden;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#020408;}
+::-webkit-scrollbar-thumb{background:#00d4ff;border-radius:2px;}
+a{color:inherit;}
+button{font-family:inherit;}
+img{max-width:100%;display:block;}
