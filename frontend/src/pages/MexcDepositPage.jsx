@@ -3,32 +3,32 @@ import { Link } from 'react-router-dom';
 import Particles from '../components/Particles';
 import BgGrid from '../components/BgGrid';
 import PageTop from '../components/PageTop';
-import '../styles/pages/binance-deposit.css';
+import '../styles/pages/mexc-deposit.css';
 
-const BINANCE_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg';
+const MEXC_LOGO = 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/544.png';
 
 const NETWORKS = [
   {
-    id: 'trx',
-    label: 'TRX',
-    title: 'TRX (TRC20)',
-    network: 'TRX',
-    address: 'TG2dCQqzg6t1QDiwfwNEitdadyfXbX3AA3',
-    qrImage: '/Binance1.jpeg',
+    id: 'trc20',
+    label: 'TRC20',
+    title: 'Tron (TRC20)',
+    network: 'Tron (TRC20)',
+    address: 'TUMBg6mzVm2JNkxNRCpdRRXBtkTuuJz5yL',
+    qrImage: '/MAXC2.jpeg',
     accent: 'cyan',
   },
   {
-    id: 'bsc',
-    label: 'BSC',
-    title: 'BSC (BEP20)',
-    network: 'BSC',
-    address: '0x78488f4691a15b6037911a93ee8762cd50e8c784',
-    qrImage: '/binance.jpeg',
-    accent: 'gold',
+    id: 'bep20',
+    label: 'BEP20',
+    title: 'BNB Smart Chain',
+    network: 'BNB Smart Chain (BEP20)',
+    address: '0xca468dfd3f61c158ec6c217a2c3c30c673c1f7f7',
+    qrImage: '/MEXC.jpeg',
+    accent: 'mexc',
   },
 ];
 
-function NetworkCard({ network, onCopy, onShare, onShareQr, copiedId }) {
+function NetworkCard({ network, onCopy, onShare, copiedId }) {
   return (
     <article className={`network-card network-card--${network.accent}`}>
       <div className="network-card-glow" aria-hidden="true" />
@@ -50,7 +50,7 @@ function NetworkCard({ network, onCopy, onShare, onShareQr, copiedId }) {
           <code className="detail-value detail-value--mono">{network.address}</code>
         </div>
       </div>
-      <div className="address-actions address-actions--triple">
+      <div className="address-actions">
         <button
           type="button"
           className="addr-btn addr-btn--copy"
@@ -68,25 +68,18 @@ function NetworkCard({ network, onCopy, onShare, onShareQr, copiedId }) {
           </svg>
           Share Address
         </button>
-        <button type="button" className="addr-btn addr-btn--qr" onClick={() => onShareQr(network)}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" /><path d="M14 14h2v2h-2zM18 14h3v3h-3zM14 18h2v3h-2zM18 18h3v3h-3z" />
-          </svg>
-          Share QR Code
-        </button>
       </div>
-      <div className="binance-brand">
-        <img src={BINANCE_LOGO} alt="Binance" width={22} height={22} />
-        <span>Binance</span>
+      <div className="mexc-brand">
+        <img src={MEXC_LOGO} alt="MEXC" width={22} height={22} />
+        <span>MEXC</span>
       </div>
     </article>
   );
 }
 
-export default function BinanceDepositPage() {
+export default function MexcDepositPage() {
   const [copiedId, setCopiedId] = useState(null);
-  const [form, setForm] = useState({ network: 'trx', email: '', username: '', amount: '' });
+  const [form, setForm] = useState({ network: 'trc20', email: '', username: '', amount: '' });
   const [screenshot, setScreenshot] = useState(null);
   const [preview, setPreview] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -106,35 +99,11 @@ export default function BinanceDepositPage() {
     const text = `USDT Deposit (${network.network})\nAddress: ${network.address}`;
     if (navigator.share) {
       try {
-        await navigator.share({ title: 'NEXA10 Binance Deposit', text });
+        await navigator.share({ title: 'NEXA10 MEXC Deposit', text });
         return;
       } catch { /* fall through */ }
     }
     await copyAddress(network.id, network.address);
-  };
-
-  const shareQrCode = async (network) => {
-    const text = `USDT Deposit to Binance (${network.network})\nAddress: ${network.address}`;
-    try {
-      const response = await fetch(network.qrImage);
-      const blob = await response.blob();
-      const file = new File([blob], `binance-${network.id}-qr.jpeg`, { type: blob.type || 'image/jpeg' });
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({
-          title: `NEXA10 Binance ${network.network} QR`,
-          text,
-          files: [file],
-        });
-        return;
-      }
-    } catch { /* fall through */ }
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: 'NEXA10 Binance Deposit', text });
-        return;
-      } catch { /* fall through */ }
-    }
-    window.open(network.qrImage, '_blank', 'noopener,noreferrer');
   };
 
   const onFileChange = (e) => {
@@ -163,33 +132,33 @@ export default function BinanceDepositPage() {
       <BgGrid />
       <PageTop
         backTo="/deposit"
-        title="Binance Deposit"
+        title="MEXC Deposit"
         icon={
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10" /><path d="M8 12h8M12 8v8" />
           </svg>
         }
       />
-      <main className="binance-main">
-        <div className="binance-intro">
-          <img src={BINANCE_LOGO} alt="" className="binance-intro-logo" width={36} height={36} />
+      <main className="mexc-main">
+        <div className="mexc-intro">
+          <img src={MEXC_LOGO} alt="" className="mexc-intro-logo" width={36} height={36} />
           <div>
-            <h1>Deposit USDT via Binance</h1>
+            <h1>Deposit USDT via MEXC</h1>
             <p>Scan the QR code or copy the address for your preferred network. Only send USDT on the matching chain.</p>
           </div>
         </div>
 
         <div className="networks-grid">
           {NETWORKS.map((n) => (
-            <NetworkCard key={n.id} network={n} onCopy={copyAddress} onShare={shareAddress} onShareQr={shareQrCode} copiedId={copiedId} />
+            <NetworkCard key={n.id} network={n} onCopy={copyAddress} onShare={shareAddress} copiedId={copiedId} />
           ))}
         </div>
 
         <section className="submit-panel">
           <div className="submit-panel-glow" aria-hidden="true" />
           <div className="submit-head">
-            <h2>Depositor Details & Payment Proof</h2>
-            <p>Upload your transfer screenshot and enter your details so we can verify your deposit.</p>
+            <h2>Submit Payment Proof</h2>
+            <p>Upload your transfer screenshot and details so we can verify your deposit.</p>
           </div>
 
           {submitted ? (
@@ -202,22 +171,22 @@ export default function BinanceDepositPage() {
           ) : (
             <form className="submit-form" onSubmit={handleSubmit}>
               <div className="form-field">
-                <label htmlFor="network">Network Used</label>
+                <label htmlFor="mexc-network">Network Used</label>
                 <select
-                  id="network"
+                  id="mexc-network"
                   value={form.network}
                   onChange={(e) => setForm({ ...form, network: e.target.value })}
                 >
-                  <option value="trx">TRX (TRC20)</option>
-                  <option value="bsc">BSC (BEP20)</option>
+                  <option value="trc20">Tron (TRC20)</option>
+                  <option value="bep20">BNB Smart Chain (BEP20)</option>
                 </select>
               </div>
 
               <div className="form-row">
                 <div className="form-field">
-                  <label htmlFor="username">Depositor Username</label>
+                  <label htmlFor="mexc-username">Username</label>
                   <input
-                    id="username"
+                    id="mexc-username"
                     type="text"
                     placeholder="Your NEXA10 username"
                     autoComplete="username"
@@ -227,9 +196,9 @@ export default function BinanceDepositPage() {
                   />
                 </div>
                 <div className="form-field">
-                  <label htmlFor="email">Depositor Email</label>
+                  <label htmlFor="mexc-email">Email</label>
                   <input
-                    id="email"
+                    id="mexc-email"
                     type="email"
                     placeholder="you@email.com"
                     autoComplete="email"
@@ -241,9 +210,9 @@ export default function BinanceDepositPage() {
               </div>
 
               <div className="form-field">
-                <label htmlFor="amount">Amount Deposited (USDT)</label>
+                <label htmlFor="mexc-amount">Amount Transferred (USDT)</label>
                 <input
-                  id="amount"
+                  id="mexc-amount"
                   type="number"
                   min="0"
                   step="any"

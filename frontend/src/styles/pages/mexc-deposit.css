@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --neon-blue: #00d4ff;
   --neon-purple: #8b5cf6;
   --neon-green: #00ff88;
@@ -9,9 +9,9 @@
   --text-primary: #f0f4ff;
   --text-muted: #8899bb;
   --text-dim: #4a5878;
-  --binance-gold: #f3ba2f;
-  --binance-gold-dim: rgba(243, 186, 47, 0.15);
-  --binance-gold-glow: rgba(243, 186, 47, 0.35);
+  --mexc-blue: #2174ff;
+  --mexc-blue-dim: rgba(33, 116, 255, 0.15);
+  --mexc-blue-glow: rgba(33, 116, 255, 0.35);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -121,7 +121,7 @@ body {
 
 .page-top-spacer { width: 44px; flex-shrink: 0; }
 
-.binance-main {
+.mexc-main {
   position: relative;
   z-index: 1;
   width: 100%;
@@ -134,30 +134,30 @@ body {
     max(16px, env(safe-area-inset-left, 0px));
 }
 
-.binance-intro {
+.mexc-intro {
   display: flex;
   align-items: flex-start;
   gap: clamp(12px, 3vw, 16px);
   margin-bottom: clamp(20px, 4vw, 28px);
   padding: clamp(16px, 4vw, 22px);
-  background: linear-gradient(135deg, rgba(243, 186, 47, 0.08), rgba(0, 212, 255, 0.06));
-  border: 1px solid rgba(243, 186, 47, 0.2);
+  background: linear-gradient(135deg, rgba(33, 116, 255, 0.08), rgba(0, 212, 255, 0.06));
+  border: 1px solid rgba(33, 116, 255, 0.2);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   min-width: 0;
 }
 
-.binance-intro > div {
+.mexc-intro > div {
   min-width: 0;
   flex: 1;
 }
 
-.binance-intro-logo {
+.mexc-intro-logo {
   flex-shrink: 0;
-  filter: drop-shadow(0 0 12px var(--binance-gold-glow));
+  filter: drop-shadow(0 0 12px var(--mexc-blue-glow));
 }
 
-.binance-intro h1 {
+.mexc-intro h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: clamp(0.95rem, 3.5vw, 1.35rem);
   font-weight: 700;
@@ -168,7 +168,7 @@ body {
   word-wrap: break-word;
 }
 
-.binance-intro p {
+.mexc-intro p {
   font-size: clamp(0.85rem, 2.5vw, 0.95rem);
   color: var(--text-muted);
   line-height: 1.5;
@@ -213,15 +213,15 @@ body {
     box-shadow: 0 16px 48px rgba(0, 212, 255, 0.15);
   }
 
-  .network-card--gold:hover {
-    border-color: rgba(243, 186, 47, 0.45);
-    box-shadow: 0 16px 48px rgba(243, 186, 47, 0.15);
+  .network-card--mexc:hover {
+    border-color: rgba(33, 116, 255, 0.45);
+    box-shadow: 0 16px 48px rgba(33, 116, 255, 0.15);
   }
 }
 
-.network-card--gold {
-  border-color: rgba(243, 186, 47, 0.25);
-  box-shadow: 0 12px 40px rgba(243, 186, 47, 0.08);
+.network-card--mexc {
+  border-color: rgba(33, 116, 255, 0.25);
+  box-shadow: 0 12px 40px rgba(33, 116, 255, 0.08);
 }
 
 .network-card-glow {
@@ -236,8 +236,8 @@ body {
   background: radial-gradient(ellipse, rgba(0, 212, 255, 0.2) 0%, transparent 70%);
 }
 
-.network-card--gold .network-card-glow {
-  background: radial-gradient(ellipse, rgba(243, 186, 47, 0.2) 0%, transparent 70%);
+.network-card--mexc .network-card-glow {
+  background: radial-gradient(ellipse, rgba(33, 116, 255, 0.2) 0%, transparent 70%);
 }
 
 .network-card-head {
@@ -264,10 +264,10 @@ body {
   border: 1px solid rgba(0, 212, 255, 0.3);
 }
 
-.network-card--gold .network-badge {
-  background: var(--binance-gold-dim);
-  color: var(--binance-gold);
-  border: 1px solid rgba(243, 186, 47, 0.35);
+.network-card--mexc .network-badge {
+  background: var(--mexc-blue-dim);
+  color: var(--mexc-blue);
+  border: 1px solid rgba(33, 116, 255, 0.35);
 }
 
 .network-card-head h2 {
@@ -388,10 +388,10 @@ body {
   transform: scale(0.97);
 }
 
-.network-card--gold .addr-btn--copy {
-  background: var(--binance-gold-dim);
-  border-color: rgba(243, 186, 47, 0.4);
-  color: var(--binance-gold);
+.network-card--mexc .addr-btn--copy {
+  background: var(--mexc-blue-dim);
+  border-color: rgba(33, 116, 255, 0.4);
+  color: var(--mexc-blue);
 }
 
 .addr-btn--share {
@@ -404,21 +404,7 @@ body {
   transform: scale(0.97);
 }
 
-.addr-btn--qr {
-  background: linear-gradient(135deg, rgba(243, 186, 47, 0.15), rgba(0, 212, 255, 0.1));
-  border-color: rgba(243, 186, 47, 0.35);
-  color: var(--binance-gold);
-}
-
-.addr-btn--qr:active {
-  transform: scale(0.97);
-}
-
-.address-actions--triple {
-  grid-template-columns: 1fr;
-}
-
-.binance-brand {
+.mexc-brand {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -428,12 +414,12 @@ body {
   border-top: 1px solid var(--border-dim);
 }
 
-.binance-brand span {
+.mexc-brand span {
   font-family: 'Orbitron', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--binance-gold);
+  color: var(--mexc-blue);
 }
 
 /* Submit panel */
@@ -624,14 +610,9 @@ body {
     box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
   }
 
-  .network-card--gold .addr-btn--copy:hover {
-    background: rgba(243, 186, 47, 0.25);
-    box-shadow: 0 0 20px var(--binance-gold-glow);
-  }
-
-  .addr-btn--qr:hover {
-    background: rgba(243, 186, 47, 0.22);
-    box-shadow: 0 0 20px var(--binance-gold-glow);
+  .network-card--mexc .addr-btn--copy:hover {
+    background: rgba(33, 116, 255, 0.25);
+    box-shadow: 0 0 20px var(--mexc-blue-glow);
   }
 
   .addr-btn--share:hover {
@@ -713,14 +694,10 @@ body {
   touch-action: manipulation;
 }
 
-/* ── Responsive: tablet & desktop ── */
+/* â”€â”€ Responsive: tablet & desktop â”€â”€ */
 @media (min-width: 640px) {
   .address-actions {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .address-actions--triple {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .addr-btn {
@@ -742,11 +719,11 @@ body {
 }
 
 @media (min-width: 768px) {
-  .binance-main {
+  .mexc-main {
     max-width: 960px;
   }
 
-  .binance-intro {
+  .mexc-intro {
     align-items: center;
   }
 
@@ -756,7 +733,7 @@ body {
 }
 
 @media (min-width: 1024px) {
-  .binance-main {
+  .mexc-main {
     max-width: 1100px;
   }
 
@@ -773,7 +750,7 @@ body {
   }
 }
 
-/* ── Small phones (iPhone SE, narrow Android) ── */
+/* â”€â”€ Small phones (iPhone SE, narrow Android) â”€â”€ */
 @media (max-width: 380px) {
   .page-top {
     gap: 10px;
@@ -789,7 +766,7 @@ body {
     height: 18px;
   }
 
-  .binance-intro {
+  .mexc-intro {
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -810,9 +787,9 @@ body {
   }
 }
 
-/* ── Landscape phones ── */
+/* â”€â”€ Landscape phones â”€â”€ */
 @media (max-height: 500px) and (orientation: landscape) {
-  .binance-main {
+  .mexc-main {
     padding-top: 12px;
     padding-bottom: 20px;
   }
@@ -839,3 +816,4 @@ body {
     transform: none;
   }
 }
+

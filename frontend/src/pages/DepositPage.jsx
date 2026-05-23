@@ -6,12 +6,14 @@ import PageTop from '../components/PageTop';
 import '../styles/pages/deposit.css';
 
 const BINANCE_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg';
+const MEXC_LOGO = 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/544.png';
 
 const methods = [
   { id: 'easypaisa', name: 'EasyPaisa', sub: 'Deposit: USD', cls: 'easypaisa', icon: 'svg' },
   { id: 'jazzcash', name: 'JazzCash', sub: 'Deposit: USD', cls: 'jazzcash', icon: 'svg' },
   { id: 'bank', name: 'Bank Transfer', sub: 'Direct Bank Deposit', cls: 'bank', icon: 'bank' },
   { id: 'binance', name: 'Binance', sub: 'Deposit: USDT', cls: 'binance', icon: 'logo', logoUrl: BINANCE_LOGO },
+  { id: 'mexc', name: 'MEXC', sub: 'Deposit: USDT', cls: 'mexc', icon: 'logo', logoUrl: MEXC_LOGO },
 ];
 
 const payIcon = (
@@ -34,6 +36,10 @@ export default function DepositPage() {
     if (!selected) return;
     if (selected === 'binance') {
       navigate('/deposit/binance');
+      return;
+    }
+    if (selected === 'mexc') {
+      navigate('/deposit/mexc');
       return;
     }
     alert(`Payment details for ${selected} will open here. Connect your backend.`);
