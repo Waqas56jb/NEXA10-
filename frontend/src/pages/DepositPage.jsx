@@ -9,24 +9,9 @@ const BINANCE_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/1/12/Binanc
 const MEXC_LOGO = 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/544.png';
 
 const methods = [
-  { id: 'easypaisa', name: 'EasyPaisa', sub: 'Deposit: USD', cls: 'easypaisa', icon: 'svg' },
-  { id: 'jazzcash', name: 'JazzCash', sub: 'Deposit: USD', cls: 'jazzcash', icon: 'svg' },
-  { id: 'bank', name: 'Bank Transfer', sub: 'Direct Bank Deposit', cls: 'bank', icon: 'bank' },
   { id: 'binance', name: 'Binance', sub: 'Deposit: USDT', cls: 'binance', icon: 'logo', logoUrl: BINANCE_LOGO },
   { id: 'mexc', name: 'MEXC', sub: 'Deposit: USDT', cls: 'mexc', icon: 'logo', logoUrl: MEXC_LOGO },
 ];
-
-const payIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="9" r="5" /><circle cx="15" cy="15" r="5" />
-  </svg>
-);
-
-const bankIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 21h18" /><path d="M5 21V7l7-4 7 4v14" /><path d="M9 21v-6h6v6" /><path d="M9 10h6" />
-  </svg>
-);
 
 export default function DepositPage() {
   const [selected, setSelected] = useState(null);
@@ -40,9 +25,7 @@ export default function DepositPage() {
     }
     if (selected === 'mexc') {
       navigate('/deposit/mexc');
-      return;
     }
-    alert(`Payment details for ${selected} will open here. Connect your backend.`);
   };
 
   return (
@@ -87,13 +70,7 @@ export default function DepositPage() {
                     <span className="pay-sub">{m.sub}</span>
                   </span>
                   <span className="pay-icon-wrap" aria-hidden="true">
-                    {m.icon === 'logo' ? (
-                      <img src={m.logoUrl} alt="" width={28} height={28} loading="lazy" decoding="async" />
-                    ) : m.icon === 'bank' ? (
-                      bankIcon
-                    ) : (
-                      payIcon
-                    )}
+                    <img src={m.logoUrl} alt="" width={28} height={28} loading="lazy" decoding="async" />
                   </span>
                 </button>
               </li>
