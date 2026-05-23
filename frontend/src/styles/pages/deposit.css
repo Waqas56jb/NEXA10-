@@ -199,6 +199,16 @@ body{
 }
 .pay-card.bank .pay-sub{color:var(--neon-blue);}
 
+.pay-card.binance{
+  background:linear-gradient(135deg,rgba(243,186,47,0.1),rgba(243,186,47,0.03));
+  border-color:rgba(243,186,47,0.28);
+}
+.pay-card.binance:hover,.pay-card.binance.selected{
+  border-color:rgba(243,186,47,0.55);
+  box-shadow:0 8px 28px rgba(243,186,47,0.15);
+}
+.pay-card.binance .pay-sub{color:#f3ba2f;}
+
 .pay-info{flex:1;min-width:0;}
 .pay-name{
   display:block;
@@ -232,7 +242,12 @@ body{
   background:rgba(0,212,255,0.15);
   color:var(--neon-blue);
 }
+.pay-card.binance .pay-icon-wrap{
+  background:rgba(243,186,47,0.18);
+  border-color:rgba(243,186,47,0.35);
+}
 .pay-icon-wrap svg{width:28px;height:28px;}
+.pay-icon-wrap img{width:28px;height:28px;object-fit:contain;border-radius:50%;}
 
 .continue-wrap{
   margin-top:22px;
@@ -261,4 +276,5 @@ body{
   .pay-card{padding:16px 14px;}
   .pay-icon-wrap{width:46px;height:46px;}
   .pay-icon-wrap svg{width:24px;height:24px;}
+  .pay-icon-wrap img{width:24px;height:24px;}
 }

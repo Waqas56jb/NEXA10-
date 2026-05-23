@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import DepositPage from './pages/DepositPage';
+import BinanceDepositPage from './pages/BinanceDepositPage';
 import InvestPage from './pages/InvestPage';
 import ReferralsPage from './pages/ReferralsPage';
 import TransactionsPage from './pages/TransactionsPage';
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/reset" element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/deposit" element={<DepositPage />} />
+        <Route path="/deposit/binance" element={<BinanceDepositPage />} />
         <Route path="/invest" element={<InvestPage />} />
         <Route path="/referrals" element={<ReferralsPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />

@@ -1,13 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Particles from '../components/Particles';
 import BgGrid from '../components/BgGrid';
 import PageTop from '../components/PageTop';
 import '../styles/pages/deposit.css';
 
+const BINANCE_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg';
+
 const methods = [
-  { id: 'easypaisa', name: 'EasyPaisa', sub: 'Deposit: USD', cls: 'easypaisa' },
-  { id: 'jazzcash', name: 'JazzCash', sub: 'Deposit: USD', cls: 'jazzcash' },
-  { id: 'bank', name: 'Bank Transfer', sub: 'Direct Bank Deposit', cls: 'bank' },
+  { id: 'easypaisa', name: 'EasyPaisa', sub: 'Deposit: USD', cls: 'easypaisa', icon: 'svg' },
+  { id: 'jazzcash', name: 'JazzCash', sub: 'Deposit: USD', cls: 'jazzcash', icon: 'svg' },
+  { id: 'bank', name: 'Bank Transfer', sub: 'Direct Bank Deposit', cls: 'bank', icon: 'bank' },
+  { id: 'binance', name: 'Binance', sub: 'Deposit: USDT', cls: 'binance', icon: 'logo', logoUrl: BINANCE_LOGO },
 ];
 
 const payIcon = (
@@ -24,6 +28,16 @@ const bankIcon = (
 
 export default function DepositPage() {
   const [selected, setSelected] = useState(null);
+  const navigate = useNavigate();
+
+  const handleContinue = () => {
+    if (!selected) return;
+    if (selected === 'binance') {
+      navigate('/deposit/binance');
+      return;
+    }
+    alert(`Payment details for ${selected} will open here. Connect your backend.`);
+  };
 
   return (
     <>
@@ -66,7 +80,15 @@ export default function DepositPage() {
                     <span className="pay-name">{m.name}</span>
                     <span className="pay-sub">{m.sub}</span>
                   </span>
-                  <span className="pay-icon-wrap" aria-hidden="true">{m.id === 'bank' ? bankIcon : payIcon}</span>
+                  <span className="pay-icon-wrap" aria-hidden="true">
+                    {m.icon === 'logo' ? (
+                      <img src={m.logoUrl} alt="" width={28} height={28} loading="lazy" decoding="async" />
+                    ) : m.icon === 'bank' ? (
+                      bankIcon
+                    ) : (
+                      payIcon
+                    )}
+                  </span>
                 </button>
               </li>
             ))}
@@ -75,7 +97,7 @@ export default function DepositPage() {
             <button
               type="button"
               className="btn-continue"
-              onClick={() => selected && alert(`Payment details for ${selected} will open here. Connect your backend.`)}
+              onClick={handleContinue}
             >
               Continue →
             </button>
