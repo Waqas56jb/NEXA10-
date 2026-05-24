@@ -37,7 +37,7 @@ export default function InvestPage() {
       <Particles />
       <BgGrid />
       <PageTop
-        title="GPU Plans"
+        title="AI Plans"
         extra={
           <button type="button" className="calc-btn" onClick={() => setCalcOpen(true)}>Calculator</button>
         }
@@ -46,7 +46,7 @@ export default function InvestPage() {
       <main className="invest-main">
         <article className="plan-card">
           <div className="plan-top">
-            <div className="plan-name-block"><h2>GPT</h2><p>A plan to start a future</p></div>
+            <div className="plan-name-block"><h2>NEXA10 Starter</h2><p>A plan to start a future</p></div>
             <span className="badge-active">Active</span>
           </div>
           <div className="stats-row">
@@ -67,7 +67,7 @@ export default function InvestPage() {
             <button type="button" className="calc-close" onClick={() => setCalcOpen(false)}>✕</button>
           </div>
           <div className="calc-modal-body">
-            <div className="plan-pill"><strong>GPT</strong> · 0.18% hourly</div>
+            <div className="plan-pill"><strong>NEXA10 Starter</strong> · 0.18% hourly</div>
             <div className="calc-field">
               <label htmlFor="calcAmount">Investment Amount</label>
               <div className="amount-wrap">

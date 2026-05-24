@@ -118,7 +118,7 @@ export default function DashboardPage() {
           <div className="card-glow" />
           <div className="earnings-head"><div className="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" /></svg></div><h2>Live Earnings</h2></div>
           <div className="balance-label"><span className="live-dot" /><span>Current Balance</span></div>
-          <div className="balance-amount"><span className="balance-currency">$</span><span>{balance.toFixed(8)}</span></div>
+          <div className="balance-amount"><span className="balance-currency">$</span><span>{balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></div>
           <div className="cycle-box">
             <span className="cycle-label">Next cycle</span>
             <span className="cycle-time">{pad(cycle.h)}:{pad(cycle.m)}:{pad(cycle.s)}</span>
