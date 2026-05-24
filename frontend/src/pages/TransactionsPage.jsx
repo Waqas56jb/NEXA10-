@@ -2,21 +2,84 @@ import { useSearchParams } from 'react-router-dom';
 import Particles from '../components/Particles';
 import BgGrid from '../components/BgGrid';
 import PageTop from '../components/PageTop';
+import { useAppData } from '../context/AppDataContext';
+import { getFundTransfers, formatTimeAgo as localFormatTimeAgo } from '../lib/storage';
+import { formatTimeAgo as apiFormatTimeAgo } from '../lib/api';
 import '../styles/pages/transactions.css';
 
 const TABS = [
-  { id: 'deposits', label: 'Deposits', empty: 'No deposits found', sub: 'Your deposits will appear here once available.' },
-  { id: 'withdrawals', label: 'Withdrawals', empty: 'No withdrawals found', sub: 'Your withdrawal history will appear here once available.' },
-  { id: 'referrals', label: 'Referrals', empty: 'No referral transactions found', sub: 'Referral commissions will show here when credited.' },
-  { id: 'earnings', label: 'Earnings', empty: 'No earnings found', sub: 'Your trading cycle earnings will appear here once credited.' },
+  { id: 'deposits', label: 'Deposits' },
+  { id: 'withdrawals', label: 'Withdrawals' },
+  { id: 'referrals', label: 'Referrals' },
+  { id: 'earnings', label: 'Earnings' },
 ];
 
 export default function TransactionsPage() {
   const [params, setParams] = useSearchParams();
   const tab = params.get('tab') || 'deposits';
-  const current = TABS.find((t) => t.id === tab) || TABS[0];
+  const { currentUser, deposits, fundTransfers, apiMode } = useAppData();
+  const formatTimeAgo = apiMode ? apiFormatTimeAgo : localFormatTimeAgo;
+
+  const userDeposits = deposits.filter(
+    (d) => d.userId === currentUser?.id || d.email === currentUser?.email || d.username === currentUser?.username
+  );
+  const transfers = apiMode ? fundTransfers : (currentUser ? getFundTransfers(currentUser.id) : []);
+  const withdrawals = transfers.filter((t) => t.type === 'outgoing');
+  const incoming = transfers.filter((t) => t.type === 'incoming');
 
   const setTab = (id) => setParams({ tab: id });
+
+  const renderList = () => {
+    if (tab === 'deposits') {
+      if (userDeposits.length === 0) return empty('No deposits found', 'Your deposits will appear here once submitted.');
+      return (
+        <ul className="tx-list">
+          {userDeposits.map((d) => (
+            <li key={d.id} className="tx-item">
+              <div><strong>${d.status === 'approved' && d.approvedAmount != null ? d.approvedAmount : d.amount} USDT</strong> · {d.exchange} {d.network}</div>
+              <span className={`tx-status tx-status--${d.status}`}>{d.status}</span>
+              <span className="tx-time">{formatTimeAgo(d.createdAt)}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    if (tab === 'withdrawals') {
+      if (withdrawals.length === 0) return empty('No withdrawals found', 'Outgoing funds from admin will appear here.');
+      return (
+        <ul className="tx-list">
+          {withdrawals.map((t) => (
+            <li key={t.id} className="tx-item">
+              <div><strong>-${t.amount.toFixed(2)}</strong> {t.note}</div>
+              <span className="tx-time">{formatTimeAgo(t.createdAt)}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    if (tab === 'earnings') {
+      if (incoming.length === 0) return empty('No earnings found', 'Approved deposits and credits will appear here.');
+      return (
+        <ul className="tx-list">
+          {incoming.map((t) => (
+            <li key={t.id} className="tx-item">
+              <div><strong>+${t.amount.toFixed(2)}</strong> {t.note}</div>
+              <span className="tx-time">{formatTimeAgo(t.createdAt)}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return empty('No referral transactions found', 'Referral commissions will show here when credited.');
+  };
+
+  const empty = (title, sub) => (
+    <div className="empty-state">
+      <div className="empty-icon">!</div>
+      <h2 className="empty-title">{title}</h2>
+      <p className="empty-desc">{sub}</p>
+    </div>
+  );
 
   return (
     <>
@@ -29,13 +92,7 @@ export default function TransactionsPage() {
           ))}
         </div>
         <div className="tx-panel">
-          <div className="tx-pane active">
-            <div className="empty-state">
-              <div className="empty-icon">!</div>
-              <h2 className="empty-title">{current.empty}</h2>
-              <p className="empty-desc">{current.sub}</p>
-            </div>
-          </div>
+          <div className="tx-pane active">{renderList()}</div>
         </div>
       </main>
     </>

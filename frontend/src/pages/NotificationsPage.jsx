@@ -1,17 +1,13 @@
 import Particles from '../components/Particles';
 import BgGrid from '../components/BgGrid';
 import PageTop from '../components/PageTop';
+import { useAppData } from '../context/AppDataContext';
+import { formatTimeAgo } from '../lib/storage';
 import '../styles/pages/notifications.css';
 
-const NEWS = [
-  { text: 'Due to network issues, JazzCash and EasyPaisa transactions may be delayed.', time: '2 hours ago' },
-  { text: 'NEXA10 is built on robust technology — a full system with a 24/7 team behind it.', time: '1 day ago' },
-  { text: 'New withdrawal processing windows are now live in your investor dashboard.', time: '3 days ago' },
-  { text: 'Referral commission rates updated — check Levels for details.', time: '5 days ago' },
-  { text: 'Scheduled maintenance completed. All systems operational.', time: '1 week ago' },
-];
-
 export default function NotificationsPage() {
+  const { notifications } = useAppData();
+
   return (
     <>
       <Particles /><BgGrid />
@@ -19,12 +15,16 @@ export default function NotificationsPage() {
       <main className="news-main">
         <div className="intro-card"><h2 id="introTitle">Platform Updates</h2><p>Stay informed about NEXA10 news and announcements.</p></div>
         <div className="news-list" role="list">
-          {NEWS.map((n, i) => (
-            <article key={i} className="news-item" role="listitem">
-              <div className="news-item-body"><span className="news-dot" /><p className="news-text">{n.text}</p></div>
-              <time className="news-meta">{n.time}</time>
-            </article>
-          ))}
+          {notifications.length === 0 ? (
+            <p className="news-empty" style={{ color: '#8899bb', textAlign: 'center', padding: 24 }}>No announcements yet.</p>
+          ) : (
+            notifications.map((n) => (
+              <article key={n.id} className="news-item" role="listitem">
+                <div className="news-item-body"><span className="news-dot" /><p className="news-text">{n.text}</p></div>
+                <time className="news-meta">{formatTimeAgo(n.createdAt)}</time>
+              </article>
+            ))
+          )}
         </div>
       </main>
     </>

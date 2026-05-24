@@ -1,9 +1,12 @@
-import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Particles from '../components/Particles';
 import BgGrid from '../components/BgGrid';
 import PageTop from '../components/PageTop';
 import '../styles/pages/mexc-deposit.css';
+import { useAppData } from '../context/AppDataContext';
+import { submitDepositRequest } from '../lib/depositSubmit';
+import { isApiEnabled } from '../lib/api';
 
 const MEXC_LOGO = 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/544.png';
 
@@ -78,12 +81,25 @@ function NetworkCard({ network, onCopy, onShare, copiedId }) {
 }
 
 export default function MexcDepositPage() {
+  const { refresh, currentUser } = useAppData();
+  const navigate = useNavigate();
   const [copiedId, setCopiedId] = useState(null);
   const [form, setForm] = useState({ network: 'trc20', email: '', username: '', amount: '' });
   const [screenshot, setScreenshot] = useState(null);
   const [preview, setPreview] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      setForm((f) => ({
+        ...f,
+        email: currentUser.email || f.email,
+        username: currentUser.username || f.username,
+      }));
+    }
+  }, [currentUser]);
 
   const copyAddress = async (id, address) => {
     try {
@@ -113,17 +129,32 @@ export default function MexcDepositPage() {
     setPreview(URL.createObjectURL(file));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.email || !form.username || !form.amount) {
-      alert('Please fill in email, username, and transfer amount.');
+    if (isApiEnabled() && !currentUser) {
+      navigate('/login');
       return;
     }
-    if (!screenshot) {
-      alert('Please upload your payment screenshot.');
-      return;
+    setSubmitting(true);
+    try {
+      await submitDepositRequest({
+        exchange: 'mexc',
+        network: form.network,
+        email: form.email,
+        username: form.username,
+        amount: form.amount,
+        screenshotFile: screenshot,
+      }, refresh);
+      setSubmitted(true);
+    } catch (err) {
+      if (err.message === 'LOGIN_REQUIRED') {
+        navigate('/login');
+        return;
+      }
+      alert(err.message || 'Failed to submit deposit');
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitted(true);
   };
 
   return (
@@ -243,7 +274,9 @@ export default function MexcDepositPage() {
                 {screenshot && <p className="file-name">{screenshot.name}</p>}
               </div>
 
-              <button type="submit" className="btn-submit-payment">Submit Payment →</button>
+              <button type="submit" className="btn-submit-payment" disabled={submitting}>
+                {submitting ? 'Submitting...' : 'Submit Payment →'}
+              </button>
             </form>
           )}
         </section>

@@ -6,10 +6,53 @@ AI-powered managed investment platform — React frontend with NEXA10 dark neon 
 
 ```
 NEXA10-/
-├── frontend/          # React + Vite application
+├── frontend/          # Customer app (users only) — port 5173
+├── admin/             # Admin panel (separate app) — port 5174
+├── server/            # Node.js + Express API (Supabase)
 ├── .gitignore
 └── README.md
 ```
+
+## Admin panel
+
+Separate app in **`admin/`** — not part of the customer frontend.
+
+| Route | Page |
+|-------|------|
+| `/login` | Admin sign in |
+| `/forgot-password` | Request password reset |
+| `/reset-password` | Set new password |
+| `/` | Dashboard |
+| `/users` | User management |
+| `/deposits` | Deposit approvals |
+| `/notifications` | Announcements |
+
+See **[admin/README.md](admin/README.md)**.
+
+## Full stack setup (Supabase + API)
+
+See **[server/README.md](server/README.md)** for database schema and API docs.
+
+Quick start:
+
+```bash
+# Terminal 1 — API
+cd server && npm install && npm run dev
+
+# Terminal 2 — Customer app
+cd frontend && npm install && npm run dev
+
+# Terminal 3 — Admin panel
+cd admin && npm install && npm run dev
+```
+
+- Customer site: http://localhost:5173  
+- Admin panel: http://localhost:5174  
+- API: http://localhost:5000  
+
+**Admin login:** `admin@nexa10.com` / `Admin@123456`
+
+Set `VITE_USE_LOCAL_STORAGE=true` in `frontend/.env` for offline demo mode (no backend).
 
 ## Pages
 
