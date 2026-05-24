@@ -49,3 +49,17 @@ export function normalizeTransfer(t) {
     createdAt: t.created_at ? new Date(t.created_at).getTime() : t.createdAt,
   };
 }
+
+export function normalizeWithdrawal(w) {
+  return {
+    id: w.id,
+    amount: parseFloat(w.amount),
+    accountHolderName: w.account_holder_name ?? w.accountHolderName,
+    accountNumber: w.account_number ?? w.accountNumber,
+    bankName: w.bank_name ?? w.bankName,
+    status: w.status,
+    adminNote: w.admin_note ?? w.adminNote,
+    createdAt: w.created_at ? new Date(w.created_at).getTime() : w.createdAt,
+    reviewedAt: w.reviewed_at ? new Date(w.reviewed_at).getTime() : null,
+  };
+}

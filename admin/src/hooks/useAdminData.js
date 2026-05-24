@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { adminApi } from '../lib/api';
-import { normalizeDeposit, normalizeNotification, normalizeTransfer, normalizeUser } from '../lib/normalize';
+import { normalizeDeposit, normalizeNotification, normalizeTransfer, normalizeUser, normalizeWithdrawal } from '../lib/normalize';
 
 export function useAdminData() {
   const [users, setUsers] = useState([]);
   const [deposits, setDeposits] = useState([]);
+  const [withdrawals, setWithdrawals] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,14 +15,16 @@ export function useAdminData() {
     setLoading(true);
     setError('');
     try {
-      const [usersRes, depositsRes, notifRes, statsRes] = await Promise.all([
+      const [usersRes, depositsRes, withdrawalsRes, notifRes, statsRes] = await Promise.all([
         adminApi.getUsers(),
         adminApi.getDeposits('all'),
+        adminApi.getWithdrawals('all').catch(() => ({ withdrawals: [] })),
         adminApi.getNotifications(),
         adminApi.stats(),
       ]);
       setUsers((usersRes.users || []).map(normalizeUser));
       setDeposits((depositsRes.deposits || []).map(normalizeDeposit));
+      setWithdrawals((withdrawalsRes.withdrawals || []).map(normalizeWithdrawal));
       setNotifications((notifRes.notifications || []).map(normalizeNotification));
       setStats(statsRes);
     } catch (err) {
@@ -38,6 +41,11 @@ export function useAdminData() {
   const pendingDeposits = useMemo(
     () => deposits.filter((d) => d.status === 'pending'),
     [deposits],
+  );
+
+  const pendingWithdrawals = useMemo(
+    () => withdrawals.filter((w) => w.status === 'pending'),
+    [withdrawals],
   );
 
   const actions = useMemo(
@@ -67,6 +75,14 @@ export function useAdminData() {
         await adminApi.rejectDeposit(id, adminNote);
         await load();
       },
+      approveWithdrawal: async (id, adminNote) => {
+        await adminApi.approveWithdrawal(id, adminNote);
+        await load();
+      },
+      rejectWithdrawal: async (id, adminNote) => {
+        await adminApi.rejectWithdrawal(id, adminNote);
+        await load();
+      },
       addNotification: async (text) => {
         await adminApi.createNotification(text);
         await load();
@@ -86,8 +102,10 @@ export function useAdminData() {
   return {
     users,
     deposits,
+    withdrawals,
     notifications,
     pendingDeposits,
+    pendingWithdrawals,
     stats,
     loading,
     error,

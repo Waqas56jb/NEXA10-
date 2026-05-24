@@ -440,6 +440,43 @@
 .admin-status--approved { background: rgba(0, 255, 136, 0.15); color: var(--neon-green); }
 .admin-status--rejected { background: rgba(255, 68, 102, 0.15); color: var(--neon-red); }
 
+/* ── Withdrawal — bank box ─────────────────────────────────────── */
+.admin-bank-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  border-radius: 10px;
+  background: rgba(0, 212, 255, 0.04);
+  border: 1px solid rgba(0, 212, 255, 0.12);
+}
+.admin-bank-box > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.admin-bank-box span {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.admin-bank-box strong {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+.admin-acct-num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.5px;
+}
+@media (max-width: 480px) {
+  .admin-bank-box { grid-template-columns: 1fr; }
+}
+
 /* User detail */
 .admin-user-detail {
   display: grid;

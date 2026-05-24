@@ -7,6 +7,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminDepositsPage from './pages/AdminDepositsPage';
+import AdminWithdrawalsPage from './pages/AdminWithdrawalsPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="deposits" element={<AdminDepositsPage />} />
+            <Route path="withdrawals" element={<AdminWithdrawalsPage />} />
             <Route path="notifications" element={<AdminNotificationsPage />} />
           </Route>
         </Route>

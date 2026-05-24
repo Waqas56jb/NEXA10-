@@ -55,6 +55,11 @@ export const userApi = {
 
   myDeposits: () => request('/api/deposits/mine', {}, true),
   myTransfers: () => request('/api/transfers/mine', {}, true),
+
+  submitWithdrawal: (payload) =>
+    request('/api/withdrawals', { method: 'POST', body: JSON.stringify(payload) }, true),
+  myWithdrawals: () => request('/api/withdrawals/mine', {}, true),
+
   getNotifications: () => request('/api/notifications'),
   setEarning: (active) =>
     request('/api/auth/me/earning', { method: 'PATCH', body: JSON.stringify({ active }) }, true),

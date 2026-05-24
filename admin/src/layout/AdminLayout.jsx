@@ -8,11 +8,13 @@ const NAV = [
   { to: '/', end: true, label: 'Overview', icon: '◈' },
   { to: '/users', label: 'Users', icon: '👥' },
   { to: '/deposits', label: 'Deposits', icon: '💰' },
+  { to: '/withdrawals', label: 'Withdrawals', icon: '🏧' },
   { to: '/notifications', label: 'Notifications', icon: '🔔' },
 ];
 
 export default function AdminLayout() {
-  const { users, pendingDeposits } = useAdminData();
+  const { users, pendingDeposits, pendingWithdrawals = [] } = useAdminData();
+  const totalPending = pendingDeposits.length + pendingWithdrawals.length;
   const navigate = useNavigate();
 
   const logout = () => {
@@ -43,6 +45,9 @@ export default function AdminLayout() {
               {item.to === '/deposits' && pendingDeposits.length > 0 && (
                 <span className="admin-badge">{pendingDeposits.length}</span>
               )}
+              {item.to === '/withdrawals' && pendingWithdrawals.length > 0 && (
+                <span className="admin-badge">{pendingWithdrawals.length}</span>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -59,14 +64,16 @@ export default function AdminLayout() {
         <header className="admin-topbar">
           <div>
             <h1 className="admin-topbar-title">Control Center</h1>
-            <p className="admin-topbar-sub">{users.length} users · {pendingDeposits.length} pending deposits</p>
+            <p className="admin-topbar-sub">
+              {users.length} users · {pendingDeposits.length} pending deposits · {pendingWithdrawals.length} pending withdrawals
+            </p>
           </div>
           <NavLink to="/notifications" className="admin-notif-btn" aria-label="Notifications">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
               <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
             </svg>
-            {pendingDeposits.length > 0 && <span className="admin-notif-dot">{pendingDeposits.length}</span>}
+            {totalPending > 0 && <span className="admin-notif-dot">{totalPending}</span>}
           </NavLink>
         </header>
         <main className="admin-content">

@@ -8,7 +8,7 @@ import {
   getNotifications,
 } from '../lib/storage';
 import { getUserToken, isApiEnabled, userApi } from '../lib/api';
-import { normalizeDeposit, normalizeNotification, normalizeTransfer, normalizeUser } from '../lib/normalize';
+import { normalizeDeposit, normalizeNotification, normalizeTransfer, normalizeUser, normalizeWithdrawal } from '../lib/normalize';
 
 const AppDataContext = createContext(null);
 
@@ -19,32 +19,37 @@ export function AppDataProvider({ children }) {
   const [apiNotifications, setApiNotifications] = useState([]);
   const [apiDeposits, setApiDeposits] = useState([]);
   const [apiFundTransfers, setApiFundTransfers] = useState([]);
+  const [apiWithdrawals, setApiWithdrawals] = useState([]);
   const [loading, setLoading] = useState(apiMode);
 
   const refresh = useCallback(async () => {
     if (apiMode && getUserToken()) {
       try {
-        const [meRes, notifRes, depRes, transferRes] = await Promise.all([
+        const [meRes, notifRes, depRes, transferRes, withdrawRes] = await Promise.all([
           userApi.me(),
           userApi.getNotifications(),
           userApi.myDeposits().catch(() => ({ deposits: [] })),
           userApi.myTransfers().catch(() => ({ transfers: [] })),
+          userApi.myWithdrawals().catch(() => ({ withdrawals: [] })),
         ]);
         setApiUser(normalizeUser(meRes.user));
         setApiNotifications((notifRes.notifications || []).map(normalizeNotification));
         setApiDeposits((depRes.deposits || []).map(normalizeDeposit));
         setApiFundTransfers((transferRes.transfers || []).map(normalizeTransfer));
+        setApiWithdrawals((withdrawRes.withdrawals || []).map(normalizeWithdrawal));
       } catch {
         setApiUser(null);
         setApiNotifications([]);
         setApiDeposits([]);
         setApiFundTransfers([]);
+        setApiWithdrawals([]);
       }
     } else if (apiMode) {
       setApiUser(null);
       setApiNotifications([]);
       setApiDeposits([]);
       setApiFundTransfers([]);
+      setApiWithdrawals([]);
     }
     setTick((t) => t + 1);
     setLoading(false);
@@ -72,6 +77,7 @@ export function AppDataProvider({ children }) {
   const value = useMemo(() => {
     if (apiMode) {
       const pendingDeposits = apiDeposits.filter((d) => d.status === 'pending');
+      const pendingWithdrawals = apiWithdrawals.filter((w) => w.status === 'pending');
       return {
         tick,
         refresh,
@@ -81,10 +87,12 @@ export function AppDataProvider({ children }) {
         users: apiUser ? [apiUser] : [],
         deposits: apiDeposits,
         pendingDeposits,
+        withdrawals: apiWithdrawals,
+        pendingWithdrawals,
         notifications: apiNotifications,
         fundTransfers: apiFundTransfers,
         settings: { refLink: `https://nexa10.com/register?ref=${apiUser?.refCode || '81ibdsh3zc'}` },
-        unreadNotifications: apiNotifications.length,
+        unreadNotifications: apiNotifications.length + pendingWithdrawals.length,
       };
     }
 
@@ -104,12 +112,14 @@ export function AppDataProvider({ children }) {
       users: store.users,
       deposits,
       pendingDeposits,
+      withdrawals: [],
+      pendingWithdrawals: [],
       notifications,
       fundTransfers: store.fundTransfers,
       settings: store.settings,
       unreadNotifications: notifications.length,
     };
-  }, [apiMode, tick, refresh, loading, apiUser, apiDeposits, apiNotifications, apiFundTransfers]);
+  }, [apiMode, tick, refresh, loading, apiUser, apiDeposits, apiNotifications, apiFundTransfers, apiWithdrawals]);
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
 }

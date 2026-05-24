@@ -140,7 +140,7 @@ export default function DashboardPage() {
         <section className="actions-grid fade-in d4">
           <Link to="/deposit" className="action-tile deposit"><span className="action-title">Deposit</span><span className="action-sub">Add Funds</span></Link>
           <Link to="/invest" className="action-tile invest"><span className="action-title">Invest</span><span className="action-sub">AI Plans</span></Link>
-          <a href="#withdraw" className="action-tile withdraw"><span className="action-title">Withdraw</span><span className="action-sub">Cash Out</span></a>
+          <Link to="/withdraw" className="action-tile withdraw"><span className="action-title">Withdraw</span><span className="action-sub">Cash Out</span></Link>
         </section>
         <section className="card qa-card fade-in d5">
           <div className="qa-head"><span className="qa-head-text">Quick Access</span></div>

@@ -171,3 +171,17 @@ body{
   .news-item{padding:16px 14px 14px;}
   .news-dot{width:8px;height:8px;margin-top:7px;}
 }
+/* ── Withdrawal status section ── */
+.news-section-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:0.8rem;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--text-muted);
+  padding:18px 4px 8px;
+}
+.news-item--pending{border-color:rgba(255,170,0,0.3);}
+.news-item--approved{border-color:rgba(0,255,136,0.3);}
+.news-item--rejected{border-color:rgba(255,68,102,0.3);}
+.news-dot--pending{background:#ffaa00 !important;}
+.news-dot--approved{background:#00ff88 !important;}
+.news-dot--rejected{background:#ff4466 !important;}

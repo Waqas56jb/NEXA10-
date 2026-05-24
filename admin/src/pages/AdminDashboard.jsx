@@ -2,14 +2,17 @@ import { Link } from 'react-router-dom';
 import { useAdminData } from '../hooks/useAdminData';
 
 export default function AdminDashboard() {
-  const { users, deposits, pendingDeposits, notifications, stats, loading, error } = useAdminData();
+  const { users, deposits, pendingDeposits, withdrawals = [], pendingWithdrawals = [], notifications, stats, loading, error } = useAdminData();
   const approved = deposits.filter((d) => d.status === 'approved');
   const totalBalance = stats?.totalBalance ?? users.reduce((s, u) => s + (u.balance || 0), 0);
+  const pendingWithdrawAmount = pendingWithdrawals.reduce((s, w) => s + (w.amount || 0), 0);
 
   const statCards = [
     { label: 'Total Users', value: stats?.users ?? users.length, color: 'cyan', to: '/users' },
-    { label: 'Pending Deposits', value: stats?.pendingDeposits ?? pendingDeposits.length, color: 'amber', to: '/deposits' },
-    { label: 'Approved Deposits', value: stats?.approvedDeposits ?? approved.length, color: 'green', to: '/deposits' },
+    { label: 'Pending Deposits', value: pendingDeposits.length, color: 'amber', to: '/deposits' },
+    { label: 'Approved Deposits', value: approved.length, color: 'green', to: '/deposits' },
+    { label: 'Pending Withdrawals', value: pendingWithdrawals.length, color: 'amber', to: '/withdrawals' },
+    { label: 'Pending Payout $', value: `$${pendingWithdrawAmount.toFixed(2)}`, color: 'purple', to: '/withdrawals' },
     { label: 'Total Balance', value: `$${Number(totalBalance).toFixed(2)}`, color: 'purple', to: '/users' },
     { label: 'Notifications', value: stats?.activeNotifications ?? notifications.length, color: 'blue', to: '/notifications' },
   ];
@@ -58,6 +61,23 @@ export default function AdminDashboard() {
             </ul>
           )}
           <Link to="/deposits" className="admin-link">View all deposits →</Link>
+        </section>
+        <section className="admin-panel">
+          <h3>Pending Withdrawals</h3>
+          {pendingWithdrawals.length === 0 ? (
+            <p className="admin-empty">No pending withdrawals</p>
+          ) : (
+            <ul className="admin-mini-list">
+              {pendingWithdrawals.slice(0, 5).map((w) => (
+                <li key={w.id}>
+                  <span>{w.userUsername || w.userEmail}</span>
+                  <span className="admin-amount">${w.amount.toFixed(2)}</span>
+                  <span className="admin-tag">{w.bankName || 'bank'}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <Link to="/withdrawals" className="admin-link">Review withdrawals →</Link>
         </section>
         <section className="admin-panel">
           <h3>Recent Users</h3>

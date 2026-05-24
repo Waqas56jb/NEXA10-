@@ -64,6 +64,13 @@ export const adminApi = {
   rejectDeposit: (id, admin_note) =>
     request(`/api/deposits/admin/${id}/reject`, { method: 'PATCH', body: JSON.stringify({ admin_note }) }),
 
+  getWithdrawals: (status = 'all') =>
+    request(`/api/withdrawals/admin/all${status !== 'all' ? `?status=${status}` : ''}`),
+  approveWithdrawal: (id, admin_note) =>
+    request(`/api/withdrawals/admin/${id}/approve`, { method: 'PATCH', body: JSON.stringify({ admin_note }) }),
+  rejectWithdrawal: (id, admin_note) =>
+    request(`/api/withdrawals/admin/${id}/reject`, { method: 'PATCH', body: JSON.stringify({ admin_note }) }),
+
   getNotifications: () => request('/api/notifications/admin/all'),
   createNotification: (text) =>
     request('/api/notifications/admin', { method: 'POST', body: JSON.stringify({ text }) }),
