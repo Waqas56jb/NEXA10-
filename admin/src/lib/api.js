@@ -1,4 +1,17 @@
-const API_URL = import.meta.env.VITE_API_URL || '';
+const PROD_API_URL = 'https://nexa-10-backend.vercel.app';
+
+function resolveApiUrl() {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim().replace(/\/$/, '');
+  if (envUrl) return envUrl;
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || host.endsWith('.local')) return '';
+    return PROD_API_URL;
+  }
+  return PROD_API_URL;
+}
+
+const API_URL = resolveApiUrl();
 
 export function getAdminToken() {
   return localStorage.getItem('nexa10_admin_token');

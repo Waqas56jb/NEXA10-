@@ -1,4 +1,19 @@
-const API_URL = import.meta.env.VITE_API_URL || '';
+const PROD_API_URL = 'https://nexa-10-backend.vercel.app';
+
+function resolveApiUrl() {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim().replace(/\/$/, '');
+  if (envUrl) return envUrl;
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    // Local dev → empty string → Vite proxy handles /api → localhost:5000
+    if (host === 'localhost' || host === '127.0.0.1' || host.endsWith('.local')) return '';
+    // Anything else (production hostname) → hit the real backend
+    return PROD_API_URL;
+  }
+  return PROD_API_URL;
+}
+
+const API_URL = resolveApiUrl();
 
 export function isApiEnabled() {
   return import.meta.env.VITE_USE_LOCAL_STORAGE !== 'true';
