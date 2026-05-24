@@ -14,6 +14,7 @@ Standalone React admin app — separate from the customer `frontend/`.
 | `/deposits` | Deposit approvals |
 | `/notifications` | Announcements |
 
+
 ## Development
 
 ```bash
