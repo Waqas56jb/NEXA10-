@@ -12,21 +12,22 @@ import dashboardRoutes from './routes/dashboard.js';
 
 const app = express();
 
-const CORS_ORIGINS = (process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:5174')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
+// Public API: reflect any Origin back to the caller and allow credentials.
+// (`origin: true` reflects the request's Origin header — required when
+// credentials: true is set, since '*' is not allowed with credentials.)
+const corsOptions = {
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Length', 'Content-Type'],
+  maxAge: 86400,
+  optionsSuccessStatus: 204,
+};
 
-app.use(
-  cors({
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
-      if (CORS_ORIGINS.includes('*') || CORS_ORIGINS.includes(origin)) return cb(null, true);
-      return cb(new Error(`CORS blocked: ${origin}`));
-    },
-    credentials: true,
-  }),
-);
+app.use(cors(corsOptions));
+// Make sure the preflight always returns 204 even if no downstream route matches
+app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
