@@ -60,6 +60,15 @@ export const userApi = {
     request('/api/withdrawals', { method: 'POST', body: JSON.stringify(payload) }, true),
   myWithdrawals: () => request('/api/withdrawals/mine', {}, true),
 
+  // ── Support ──
+  mySupportCases: () => request('/api/support/mine', {}, true),
+  myOpenSupportCase: () => request('/api/support/mine/open', {}, true),
+  getSupportCase: (id) => request(`/api/support/mine/${id}`, {}, true),
+  openSupportCase: (payload) =>
+    request('/api/support', { method: 'POST', body: JSON.stringify(payload) }, true),
+  sendSupportMessage: (caseId, payload) =>
+    request(`/api/support/mine/${caseId}/messages`, { method: 'POST', body: JSON.stringify(payload) }, true),
+
   getNotifications: () => request('/api/notifications'),
   setEarning: (active) =>
     request('/api/auth/me/earning', { method: 'PATCH', body: JSON.stringify({ active }) }, true),

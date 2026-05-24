@@ -7,6 +7,7 @@ import userAuthRoutes from './routes/userAuth.js';
 import adminUsersRoutes from './routes/adminUsers.js';
 import depositsRoutes from './routes/deposits.js';
 import withdrawalsRoutes from './routes/withdrawals.js';
+import supportRoutes from './routes/support.js';
 import notificationsRoutes from './routes/notifications.js';
 import transfersRoutes from './routes/transfers.js';
 import dashboardRoutes from './routes/dashboard.js';
@@ -46,6 +47,7 @@ app.use('/api/auth', userAuthRoutes);
 app.use('/api/admin/users', adminUsersRoutes);
 app.use('/api/deposits', depositsRoutes);
 app.use('/api/withdrawals', withdrawalsRoutes);
+app.use('/api/support', supportRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/transfers', transfersRoutes);
 

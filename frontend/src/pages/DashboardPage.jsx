@@ -151,6 +151,7 @@ export default function DashboardPage() {
               ['/transactions', 'Transactions', 'Deposits, withdrawals & history'],
               ['/levels', 'Levels', 'Your rank & tier benefits'],
               ['/notifications', 'News', 'Platform updates & announcements'],
+              ['/support', 'Support', 'Chat with our team & upload screenshots'],
             ].map(([to, name, desc]) => (
               <Link key={to} to={to} className="qa-item">
                 <div className="qa-text"><div className="qa-name">{name}</div><div className="qa-desc">{desc}</div></div>

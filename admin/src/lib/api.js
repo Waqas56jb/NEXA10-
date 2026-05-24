@@ -71,6 +71,15 @@ export const adminApi = {
   rejectWithdrawal: (id, admin_note) =>
     request(`/api/withdrawals/admin/${id}/reject`, { method: 'PATCH', body: JSON.stringify({ admin_note }) }),
 
+  // ── Support ──
+  getSupportCases: (status = 'all') =>
+    request(`/api/support/admin/cases${status !== 'all' ? `?status=${status}` : ''}`),
+  getSupportCase: (id) => request(`/api/support/admin/cases/${id}`),
+  sendSupportMessage: (id, payload) =>
+    request(`/api/support/admin/cases/${id}/messages`, { method: 'POST', body: JSON.stringify(payload) }),
+  closeSupportCase: (id, close_note) =>
+    request(`/api/support/admin/cases/${id}/close`, { method: 'PATCH', body: JSON.stringify({ close_note }) }),
+
   getNotifications: () => request('/api/notifications/admin/all'),
   createNotification: (text) =>
     request('/api/notifications/admin', { method: 'POST', body: JSON.stringify({ text }) }),

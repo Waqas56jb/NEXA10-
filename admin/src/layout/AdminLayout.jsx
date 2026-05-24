@@ -9,12 +9,13 @@ const NAV = [
   { to: '/users', label: 'Users', icon: '👥' },
   { to: '/deposits', label: 'Deposits', icon: '💰' },
   { to: '/withdrawals', label: 'Withdrawals', icon: '🏧' },
+  { to: '/support', label: 'Support', icon: '💬' },
   { to: '/notifications', label: 'Notifications', icon: '🔔' },
 ];
 
 export default function AdminLayout() {
-  const { users, pendingDeposits, pendingWithdrawals = [] } = useAdminData();
-  const totalPending = pendingDeposits.length + pendingWithdrawals.length;
+  const { users, pendingDeposits, pendingWithdrawals = [], unreadSupportCases = [] } = useAdminData();
+  const totalPending = pendingDeposits.length + pendingWithdrawals.length + unreadSupportCases.length;
   const navigate = useNavigate();
 
   const logout = () => {
@@ -48,6 +49,9 @@ export default function AdminLayout() {
               {item.to === '/withdrawals' && pendingWithdrawals.length > 0 && (
                 <span className="admin-badge">{pendingWithdrawals.length}</span>
               )}
+              {item.to === '/support' && unreadSupportCases.length > 0 && (
+                <span className="admin-badge">{unreadSupportCases.length}</span>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -65,7 +69,7 @@ export default function AdminLayout() {
           <div>
             <h1 className="admin-topbar-title">Control Center</h1>
             <p className="admin-topbar-sub">
-              {users.length} users · {pendingDeposits.length} pending deposits · {pendingWithdrawals.length} pending withdrawals
+              {users.length} users · {pendingDeposits.length} pending deposits · {pendingWithdrawals.length} pending withdrawals · {unreadSupportCases.length} new support
             </p>
           </div>
           <NavLink to="/notifications" className="admin-notif-btn" aria-label="Notifications">

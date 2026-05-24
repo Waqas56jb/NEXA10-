@@ -6,6 +6,7 @@ export function useAdminData() {
   const [users, setUsers] = useState([]);
   const [deposits, setDeposits] = useState([]);
   const [withdrawals, setWithdrawals] = useState([]);
+  const [supportCases, setSupportCases] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,16 +16,18 @@ export function useAdminData() {
     setLoading(true);
     setError('');
     try {
-      const [usersRes, depositsRes, withdrawalsRes, notifRes, statsRes] = await Promise.all([
+      const [usersRes, depositsRes, withdrawalsRes, supportRes, notifRes, statsRes] = await Promise.all([
         adminApi.getUsers(),
         adminApi.getDeposits('all'),
         adminApi.getWithdrawals('all').catch(() => ({ withdrawals: [] })),
+        adminApi.getSupportCases('all').catch(() => ({ cases: [] })),
         adminApi.getNotifications(),
         adminApi.stats(),
       ]);
       setUsers((usersRes.users || []).map(normalizeUser));
       setDeposits((depositsRes.deposits || []).map(normalizeDeposit));
       setWithdrawals((withdrawalsRes.withdrawals || []).map(normalizeWithdrawal));
+      setSupportCases(supportRes.cases || []);
       setNotifications((notifRes.notifications || []).map(normalizeNotification));
       setStats(statsRes);
     } catch (err) {
@@ -46,6 +49,15 @@ export function useAdminData() {
   const pendingWithdrawals = useMemo(
     () => withdrawals.filter((w) => w.status === 'pending'),
     [withdrawals],
+  );
+
+  const openSupportCases = useMemo(
+    () => supportCases.filter((c) => c.status === 'open'),
+    [supportCases],
+  );
+  const unreadSupportCases = useMemo(
+    () => supportCases.filter((c) => c.status === 'open' && c.unread_for_admin),
+    [supportCases],
   );
 
   const actions = useMemo(
@@ -103,6 +115,9 @@ export function useAdminData() {
     users,
     deposits,
     withdrawals,
+    supportCases,
+    openSupportCases,
+    unreadSupportCases,
     notifications,
     pendingDeposits,
     pendingWithdrawals,

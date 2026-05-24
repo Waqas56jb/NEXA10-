@@ -8,6 +8,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminDepositsPage from './pages/AdminDepositsPage';
 import AdminWithdrawalsPage from './pages/AdminWithdrawalsPage';
+import AdminSupportPage from './pages/AdminSupportPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="deposits" element={<AdminDepositsPage />} />
             <Route path="withdrawals" element={<AdminWithdrawalsPage />} />
+            <Route path="support" element={<AdminSupportPage />} />
             <Route path="notifications" element={<AdminNotificationsPage />} />
           </Route>
         </Route>

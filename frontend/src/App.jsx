@@ -10,6 +10,7 @@ import ReferralsPage from './pages/ReferralsPage';
 import TransactionsPage from './pages/TransactionsPage';
 import LevelsPage from './pages/LevelsPage';
 import NotificationsPage from './pages/NotificationsPage';
+import SupportPage from './pages/SupportPage';
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/levels" element={<LevelsPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="/support" element={<SupportPage />} />
       </Routes>
     </BrowserRouter>
   );

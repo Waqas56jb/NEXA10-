@@ -2,7 +2,12 @@ import { Link } from 'react-router-dom';
 import { useAdminData } from '../hooks/useAdminData';
 
 export default function AdminDashboard() {
-  const { users, deposits, pendingDeposits, withdrawals = [], pendingWithdrawals = [], notifications, stats, loading, error } = useAdminData();
+  const {
+    users, deposits, pendingDeposits,
+    withdrawals = [], pendingWithdrawals = [],
+    openSupportCases = [], unreadSupportCases = [],
+    notifications, stats, loading, error,
+  } = useAdminData();
   const approved = deposits.filter((d) => d.status === 'approved');
   const totalBalance = stats?.totalBalance ?? users.reduce((s, u) => s + (u.balance || 0), 0);
   const pendingWithdrawAmount = pendingWithdrawals.reduce((s, w) => s + (w.amount || 0), 0);
@@ -13,6 +18,8 @@ export default function AdminDashboard() {
     { label: 'Approved Deposits', value: approved.length, color: 'green', to: '/deposits' },
     { label: 'Pending Withdrawals', value: pendingWithdrawals.length, color: 'amber', to: '/withdrawals' },
     { label: 'Pending Payout $', value: `$${pendingWithdrawAmount.toFixed(2)}`, color: 'purple', to: '/withdrawals' },
+    { label: 'Open Support Cases', value: openSupportCases.length, color: 'cyan', to: '/support' },
+    { label: 'Unread Support', value: unreadSupportCases.length, color: 'amber', to: '/support' },
     { label: 'Total Balance', value: `$${Number(totalBalance).toFixed(2)}`, color: 'purple', to: '/users' },
     { label: 'Notifications', value: stats?.activeNotifications ?? notifications.length, color: 'blue', to: '/notifications' },
   ];
