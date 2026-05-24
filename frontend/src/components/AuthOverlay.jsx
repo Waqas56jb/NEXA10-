@@ -1,8 +1,49 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser, signupUser } from '../lib/storage';
 import { isApiEnabled, setUserToken, userApi } from '../lib/api';
 import { useAppData } from '../context/AppDataContext';
+
+const IconMail = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="2" y="4" width="20" height="16" rx="2" />
+    <path d="M22 6l-10 7L2 6" />
+  </svg>
+);
+
+const IconLock = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="3" y="11" width="18" height="11" rx="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
+const IconUser = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const IconArrowLeft = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: 14, height: 14, marginRight: 6, verticalAlign: 'middle' }}>
+    <path d="M19 12H5" />
+    <path d="M12 19l-7-7 7-7" />
+  </svg>
+);
+
+const IconArrowRight = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: 16, height: 16, marginLeft: 6, verticalAlign: 'middle' }}>
+    <path d="M5 12h14" />
+    <path d="M12 5l7 7-7 7" />
+  </svg>
+);
+
+const IconCheck = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: 32, height: 32 }}>
+    <path d="M20 6L9 17l-5-5" />
+  </svg>
+);
 
 export default function AuthOverlay() {
   const navigate = useNavigate();
@@ -109,8 +150,22 @@ export default function AuthOverlay() {
     }
   };
 
+  // Shared input props that force English keyboards / no autocorrect / no autocapitalize
+  const englishInput = {
+    lang: 'en',
+    spellCheck: false,
+    autoCorrect: 'off',
+    autoCapitalize: 'none',
+    autoComplete: 'off',
+  };
+  const emailInput = { ...englishInput, type: 'email', inputMode: 'email', autoComplete: 'email' };
+  const passwordInput = { ...englishInput, type: 'password', autoComplete: 'current-password' };
+  const newPasswordInput = { ...englishInput, type: 'password', autoComplete: 'new-password' };
+  const textInput = { ...englishInput, type: 'text', inputMode: 'text' };
+  const numericInput = { ...englishInput, type: 'text', inputMode: 'numeric', pattern: '[0-9]*' };
+
   return (
-    <div id="authPage" className="is-open" aria-hidden="false">
+    <div id="authPage" className="is-open" aria-hidden="false" lang="en">
       <div className="auth-layout">
         <div className="left-panel">
           <div className="left-grid" />
@@ -130,12 +185,15 @@ export default function AuthOverlay() {
         </div>
         <div className="right-panel">
           <div className="right-inner">
-            <button type="button" className="back-to-site" onClick={close}>ΓåÉ Back to NEXA10.com</button>
+            <button type="button" className="back-to-site" onClick={close}>
+              <IconArrowLeft />Back to NEXA10.com
+            </button>
             <div className="auth-tabs">
               <button type="button" className={`tab-btn${tab === 'login' ? ' active' : ''}`} onClick={() => switchTab('login')}>Sign In</button>
               <button type="button" className={`tab-btn${tab === 'signup' ? ' active' : ''}`} onClick={() => switchTab('signup')}>Invest</button>
               {tab === 'reset' && <button type="button" className="tab-btn active">Reset</button>}
             </div>
+
             {tab === 'login' && (
               <div className="auth-form active">
                 <div className="form-head"><h2>Welcome <span>Back</span></h2><p>Sign in to access your AI trading dashboard</p></div>
@@ -143,16 +201,28 @@ export default function AuthOverlay() {
                   <div className="field">
                     <label>Email Address</label>
                     <div className={`input-wrap${errors.loginEmail ? ' error' : ''}`}>
-                      <span className="input-icon">Γ£ë</span>
-                      <input className="field-input" type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="you@email.com" />
+                      <span className="input-icon"><IconMail /></span>
+                      <input
+                        className="field-input"
+                        {...emailInput}
+                        value={loginEmail}
+                        onChange={(e) => setLoginEmail(e.target.value)}
+                        placeholder="you@email.com"
+                      />
                     </div>
                     {errors.loginEmail && <span className="field-error show">Please enter a valid email address</span>}
                   </div>
                   <div className="field">
                     <label>Password</label>
                     <div className="input-wrap">
-                      <span className="input-icon">≡ƒöÆ</span>
-                      <input className="field-input" type="password" value={loginPw} onChange={(e) => setLoginPw(e.target.value)} placeholder="Enter your password" />
+                      <span className="input-icon"><IconLock /></span>
+                      <input
+                        className="field-input"
+                        {...passwordInput}
+                        value={loginPw}
+                        onChange={(e) => setLoginPw(e.target.value)}
+                        placeholder="Enter your password"
+                      />
                     </div>
                     {errors.loginPw && <span className="field-error show">Password must be at least 8 characters</span>}
                   </div>
@@ -160,11 +230,17 @@ export default function AuthOverlay() {
                 <div className="forgot-row"><button type="button" className="forgot-link" onClick={() => switchTab('reset')}>Forgot password?</button></div>
                 <br />
                 <button type="button" className="btn-submit" onClick={handleLogin} disabled={busy}>
-                  {busy ? 'Signing in...' : 'Sign In to NEXA10 →'}
+                  {busy ? 'Signing in...' : (<>Sign In to NEXA10<IconArrowRight /></>)}
                 </button>
-                <div className="switch-text">Don't have an account? <button type="button" className="switch-link" onClick={() => switchTab('signup')}>Create one free ΓåÆ</button></div>
+                <div className="switch-text">
+                  Don't have an account?{' '}
+                  <button type="button" className="switch-link" onClick={() => switchTab('signup')}>
+                    Create one free<IconArrowRight />
+                  </button>
+                </div>
               </div>
             )}
+
             {tab === 'signup' && (
               <div className="auth-form active">
                 <div className="form-head"><h2>Start Your <span>Investment</span></h2><p>Create your investor profile</p></div>
@@ -172,44 +248,121 @@ export default function AuthOverlay() {
                   <div className="field">
                     <label>Email Address</label>
                     <div className={`input-wrap${errors.signupEmail ? ' error' : ''}`}>
-                      <span className="input-icon">@</span>
-                      <input className="field-input" type="email" value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} placeholder="you@email.com" />
+                      <span className="input-icon"><IconMail /></span>
+                      <input
+                        className="field-input"
+                        {...emailInput}
+                        autoComplete="email"
+                        value={signupEmail}
+                        onChange={(e) => setSignupEmail(e.target.value)}
+                        placeholder="you@email.com"
+                      />
                     </div>
                     {errors.signupEmail && <span className="field-error show">Please enter a valid email</span>}
                   </div>
                   <div className="field">
                     <label>Username</label>
                     <div className="input-wrap">
-                      <span className="input-icon">U</span>
-                      <input className="field-input" type="text" value={signupUsername} onChange={(e) => setSignupUsername(e.target.value)} placeholder="Your display name" />
+                      <span className="input-icon"><IconUser /></span>
+                      <input
+                        className="field-input"
+                        {...textInput}
+                        autoComplete="username"
+                        value={signupUsername}
+                        onChange={(e) => setSignupUsername(e.target.value)}
+                        placeholder="Your display name"
+                      />
                     </div>
                   </div>
-                  <div className="field"><label>Create Password</label><div className="input-wrap"><span className="input-icon">≡ƒöÆ</span><input className="field-input" type="password" value={signupPw} onChange={(e) => setSignupPw(e.target.value)} /></div></div>
-                  <div className="field"><label>Confirm Password</label><div className="input-wrap"><span className="input-icon">≡ƒöÆ</span><input className="field-input" type="password" value={confirmPw} onChange={(e) => setConfirmPw(e.target.value)} /></div></div>
+                  <div className="field">
+                    <label>Create Password</label>
+                    <div className="input-wrap">
+                      <span className="input-icon"><IconLock /></span>
+                      <input
+                        className="field-input"
+                        {...newPasswordInput}
+                        value={signupPw}
+                        onChange={(e) => setSignupPw(e.target.value)}
+                        placeholder="Min. 8 characters"
+                      />
+                    </div>
+                  </div>
+                  <div className="field">
+                    <label>Confirm Password</label>
+                    <div className="input-wrap">
+                      <span className="input-icon"><IconLock /></span>
+                      <input
+                        className="field-input"
+                        {...newPasswordInput}
+                        value={confirmPw}
+                        onChange={(e) => setConfirmPw(e.target.value)}
+                        placeholder="Repeat password"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <button type="button" className="btn-submit" onClick={handleSignup} disabled={busy}>
-                  {busy ? 'Creating account...' : 'Open Investor Account →'}
+                  {busy ? 'Creating account...' : (<>Open Investor Account<IconArrowRight /></>)}
                 </button>
-                <div className="switch-text">Already have an account? <button type="button" className="switch-link" onClick={() => switchTab('login')}>Sign in ΓåÆ</button></div>
+                <div className="switch-text">
+                  Already have an account?{' '}
+                  <button type="button" className="switch-link" onClick={() => switchTab('login')}>
+                    Sign in<IconArrowRight />
+                  </button>
+                </div>
               </div>
             )}
+
             {tab === 'reset' && (
               <div className="auth-form active">
                 <div className="form-head"><h2>Reset <span>Password</span></h2></div>
                 {resetStep === 1 && (
                   <>
-                    <div className="field"><label>Email</label><div className="input-wrap"><input className="field-input" type="email" value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} /></div></div>
-                    <button type="button" className="btn-submit" onClick={() => emailOk(resetEmail) ? setResetStep(2) : setErrors({ resetEmail: true })}>Send OTP ΓåÆ</button>
+                    <div className="field">
+                      <label>Email</label>
+                      <div className={`input-wrap${errors.resetEmail ? ' error' : ''}`}>
+                        <span className="input-icon"><IconMail /></span>
+                        <input
+                          className="field-input"
+                          {...emailInput}
+                          value={resetEmail}
+                          onChange={(e) => setResetEmail(e.target.value)}
+                          placeholder="your@email.com"
+                        />
+                      </div>
+                    </div>
+                    <button type="button" className="btn-submit" onClick={() => emailOk(resetEmail) ? setResetStep(2) : setErrors({ resetEmail: true })}>
+                      Send OTP<IconArrowRight />
+                    </button>
                   </>
                 )}
                 {resetStep === 2 && (
                   <>
-                    <div className="otp-row">{otp.map((v, i) => (<input key={i} className="otp-input" maxLength={1} value={v} onChange={(e) => { const n = [...otp]; n[i] = e.target.value; setOtp(n); }} />))}</div>
-                    <button type="button" className="btn-submit" onClick={() => setResetStep(4)}>Verify ΓåÆ</button>
+                    <div className="otp-row">
+                      {otp.map((v, i) => (
+                        <input
+                          key={i}
+                          className="otp-input"
+                          maxLength={1}
+                          {...numericInput}
+                          value={v}
+                          onChange={(e) => { const n = [...otp]; n[i] = e.target.value.replace(/[^0-9]/g, ''); setOtp(n); }}
+                        />
+                      ))}
+                    </div>
+                    <button type="button" className="btn-submit" onClick={() => setResetStep(4)}>
+                      Verify<IconArrowRight />
+                    </button>
                   </>
                 )}
                 {resetStep === 4 && (
-                  <div className="reset-sent show"><div className="reset-sent-icon">Γ£ô</div><h3>Password Updated!</h3><button type="button" className="btn-submit" onClick={() => switchTab('login')}>Sign In ΓåÆ</button></div>
+                  <div className="reset-sent show">
+                    <div className="reset-sent-icon" style={{ color: 'var(--neon-green)' }}><IconCheck /></div>
+                    <h3>Password Updated!</h3>
+                    <button type="button" className="btn-submit" onClick={() => switchTab('login')}>
+                      Sign In<IconArrowRight />
+                    </button>
+                  </div>
                 )}
               </div>
             )}

@@ -658,8 +658,10 @@ body.auth-open{overflow:hidden;}
 #authPage .input-wrap{position:relative;}
 #authPage .input-icon{
   position:absolute;left:14px;top:50%;transform:translateY(-50%);
-  font-size:1rem;color:var(--text-dim);pointer-events:none;transition:.3s;
+  width:18px;height:18px;color:var(--text-dim);pointer-events:none;transition:.3s;
+  display:flex;align-items:center;justify-content:center;
 }
+#authPage .input-icon svg{width:18px;height:18px;display:block;}
 #authPage .field-input{
   width:100%;padding:14px 14px 14px 44px;
   background:var(--dark-input);
