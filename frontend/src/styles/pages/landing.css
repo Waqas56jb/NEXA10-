@@ -866,3 +866,11 @@ body.auth-open{overflow:hidden;}
 #authPage .field-success.show{display:block;}
 #authPage .input-wrap.error .field-input{border-color:#ff4466;}
 #authPage .input-wrap.success .field-input{border-color:rgba(0,255,136,0.4);}
+/* T&C checkbox error state */
+#authPage .check-row--err{
+  padding:10px 12px;border-radius:10px;
+  background:rgba(255,68,102,0.06);
+  border:1px solid rgba(255,68,102,0.4);
+  margin:-10px -12px 22px;
+}
+#authPage .check-row--err label{color:#ffb6c2;}

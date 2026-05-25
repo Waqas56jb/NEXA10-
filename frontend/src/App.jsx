@@ -11,6 +11,7 @@ import TransactionsPage from './pages/TransactionsPage';
 import LevelsPage from './pages/LevelsPage';
 import NotificationsPage from './pages/NotificationsPage';
 import SupportPage from './pages/SupportPage';
+import TermsPage from './pages/TermsPage';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/levels" element={<LevelsPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/support" element={<SupportPage />} />
+        <Route path="/terms" element={<TermsPage />} />
       </Routes>
     </BrowserRouter>
   );

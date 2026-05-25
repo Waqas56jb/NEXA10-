@@ -60,6 +60,7 @@ export default function AuthOverlay() {
   const [confirmPw, setConfirmPw] = useState('');
   const [resetEmail, setResetEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [agreedTerms, setAgreedTerms] = useState(false);
   const [errors, setErrors] = useState({});
   const [busy, setBusy] = useState(false);
 
@@ -118,6 +119,7 @@ export default function AuthOverlay() {
     if (!emailOk(signupEmail)) e.signupEmail = true;
     if (signupPw.length < 8) e.signupPw = true;
     if (signupPw !== confirmPw) e.confirmPw = true;
+    if (!agreedTerms) e.agreedTerms = true;
     setErrors(e);
     if (Object.keys(e).length) return;
 
@@ -301,7 +303,31 @@ export default function AuthOverlay() {
                     </div>
                   </div>
                 </div>
-                <button type="button" className="btn-submit" onClick={handleSignup} disabled={busy}>
+                <div className={`check-row${errors.agreedTerms ? ' check-row--err' : ''}`}>
+                  <input
+                    id="signup-agree-terms"
+                    type="checkbox"
+                    checked={agreedTerms}
+                    onChange={(ev) => {
+                      setAgreedTerms(ev.target.checked);
+                      if (ev.target.checked && errors.agreedTerms) {
+                        const { agreedTerms: _omit, ...rest } = errors;
+                        setErrors(rest);
+                      }
+                    }}
+                  />
+                  <label htmlFor="signup-agree-terms">
+                    I have read and agree to NEXA10's{' '}
+                    <a href="/terms" target="_blank" rel="noreferrer">Terms &amp; Conditions</a>.
+                  </label>
+                </div>
+                {errors.agreedTerms && (
+                  <span className="field-error show" style={{ marginTop: '-12px', marginBottom: '12px', display: 'block' }}>
+                    You must agree to the Terms &amp; Conditions to create an account.
+                  </span>
+                )}
+
+                <button type="button" className="btn-submit" onClick={handleSignup} disabled={busy || !agreedTerms}>
                   {busy ? 'Creating account...' : (<>Open Investor Account<IconArrowRight /></>)}
                 </button>
                 <div className="switch-text">
