@@ -96,7 +96,7 @@ export default function TermsPage() {
           <div className="terms-meta">
             <span>Last updated: 25 May 2026</span>
             <span aria-hidden="true">·</span>
-            <a href="https://www.nexa10.com" target="_blank" rel="noreferrer">nexa10.com</a>
+            <a href="https://www.nexa10.net" target="_blank" rel="noreferrer">nexa10.net</a>
           </div>
         </section>
 

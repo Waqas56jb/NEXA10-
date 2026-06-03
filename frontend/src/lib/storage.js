@@ -14,7 +14,7 @@ const DEFAULT_STORE = {
   ],
   settings: {
     adminPassword: 'admin123',
-    refLink: 'https://nexa10.com/register?ref=81ibdsh3zc',
+    refLink: 'https://www.nexa10.net/register?ref=81ibdsh3zc',
   },
   adminSession: null,
 };

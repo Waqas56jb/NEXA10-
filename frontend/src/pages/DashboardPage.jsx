@@ -10,7 +10,7 @@ import '../styles/pages/dashboard.css';
 
 export default function DashboardPage() {
   const { currentUser, notifications, settings, refresh, loading, apiMode } = useAppData();
-  const refLink = settings?.refLink || 'https://nexa10.com/register?ref=81ibdsh3zc';
+  const refLink = settings?.refLink || 'https://www.nexa10.net/register?ref=81ibdsh3zc';
   const [liveExtra, setLiveExtra] = useState(0);
   const [earning, setEarning] = useState(() => (apiMode ? Boolean(currentUser?.earningActive) : isEarningActive()));
   const [toast, setToast] = useState('');
@@ -102,6 +102,14 @@ export default function DashboardPage() {
       <header className="app-header">
         <Link to="/dashboard" className="app-logo"><img src="/logo.png" alt="NEXA10" /></Link>
         <div className="header-actions">
+          {currentUser?.username && (
+            <span className="user-chip" title={currentUser?.email || ''}>
+              <span className="user-chip-avatar" aria-hidden="true">
+                {(currentUser.username || currentUser.email || 'U').slice(0, 2).toUpperCase()}
+              </span>
+              <span className="user-chip-name">{currentUser.username}</span>
+            </span>
+          )}
           <Link to="/notifications" className="icon-btn" aria-label="Notifications">
             {notifications.length > 0 && <span className="pulse-dot" />}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
@@ -118,7 +126,7 @@ export default function DashboardPage() {
           <div className="card-glow" />
           <div className="earnings-head"><div className="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" /></svg></div><h2>Live Earnings</h2></div>
           <div className="balance-label"><span className="live-dot" /><span>Current Balance</span></div>
-          <div className="balance-amount"><span className="balance-currency">$</span><span>{balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></div>
+          <div className="balance-amount"><span className="balance-currency">$</span><span>{balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span><span className="balance-unit">USD</span></div>
           <div className="cycle-box">
             <span className="cycle-label">Next cycle</span>
             <span className="cycle-time">{pad(cycle.h)}:{pad(cycle.m)}:{pad(cycle.s)}</span>

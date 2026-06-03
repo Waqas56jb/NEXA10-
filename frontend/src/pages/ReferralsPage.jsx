@@ -2,9 +2,8 @@ import { useState } from 'react';
 import Particles from '../components/Particles';
 import BgGrid from '../components/BgGrid';
 import PageTop from '../components/PageTop';
+import { useAppData } from '../context/AppDataContext';
 import '../styles/pages/referrals.css';
-
-const REF_LINK = 'https://nexa10.com/register?ref=81ibdsh3zc';
 
 const stats = {
   total: [{ v: '0', l: 'Total' }, { v: '$0', l: 'Total Com.' }, { v: '$0', l: 'Total Invest.' }],
@@ -13,10 +12,14 @@ const stats = {
 };
 
 export default function ReferralsPage() {
+  const { currentUser, settings } = useAppData();
+  const refLink =
+    settings?.refLink ||
+    `https://www.nexa10.net/register?ref=${currentUser?.refCode || '81ibdsh3zc'}`;
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(REF_LINK);
+    await navigator.clipboard.writeText(refLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -36,7 +39,7 @@ export default function ReferralsPage() {
             ))}
           </div>
           <div className="ref-link-banner">
-            <p>Share your link<code>{REF_LINK}</code></p>
+            <p>Share your link<code>{refLink}</code></p>
             <button type="button" className="btn-copy" onClick={copy}>{copied ? 'Copied!' : 'Copy Link'}</button>
           </div>
         </div>

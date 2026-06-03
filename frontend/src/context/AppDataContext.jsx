@@ -91,7 +91,7 @@ export function AppDataProvider({ children }) {
         pendingWithdrawals,
         notifications: apiNotifications,
         fundTransfers: apiFundTransfers,
-        settings: { refLink: `https://nexa10.com/register?ref=${apiUser?.refCode || '81ibdsh3zc'}` },
+        settings: { refLink: `https://www.nexa10.net/register?ref=${apiUser?.refCode || '81ibdsh3zc'}` },
         unreadNotifications: apiNotifications.length + pendingWithdrawals.length,
       };
     }
