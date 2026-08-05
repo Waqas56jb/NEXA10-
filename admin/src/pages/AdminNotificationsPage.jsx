@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAdminData } from '../hooks/useAdminData';
+import { useAdminData } from '../context/AdminDataContext';
 import { formatTimeAgo } from '../lib/api';
 
 export default function AdminNotificationsPage() {
@@ -41,12 +41,12 @@ export default function AdminNotificationsPage() {
   };
 
   if (loading) return <div className="admin-page"><p className="admin-muted">Loading notifications...</p></div>;
-  if (error) return <div className="admin-page"><p className="admin-error">{error}</p></div>;
 
   return (
     <div className="admin-page">
       <h2 className="admin-page-title">Notifications</h2>
       <p className="admin-page-desc">Publish announcements — they appear on the customer notifications page and dashboard bell.</p>
+      {error && <p className="admin-error">{error}</p>}
 
       <form className="admin-panel admin-notif-form" onSubmit={publish}>
         <h3>Post New Notification</h3>

@@ -22,6 +22,33 @@ export function setAdminToken(token) {
   else localStorage.removeItem('nexa10_admin_token');
 }
 
+// Reads the `exp` claim without verifying the signature. The server still does
+// the real check — this only stops the panel from sitting on a token it already
+// knows is dead, which previously showed as an endless loading screen.
+export function isAdminTokenValid() {
+  const token = getAdminToken();
+  if (!token) return false;
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+  try {
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+    if (!payload.exp) return true;
+    return payload.exp * 1000 > Date.now();
+  } catch {
+    return false;
+  }
+}
+
+export const SESSION_EXPIRED_EVENT = 'nexa10:admin-session-expired';
+export const SESSION_EXPIRED_MESSAGE = 'Session expired — please sign in again';
+
+function endSession() {
+  setAdminToken(null);
+  window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+}
+
+const REQUEST_TIMEOUT_MS = 20000;
+
 async function request(path, options = {}, auth = true) {
   const headers = { 'Content-Type': 'application/json', ...options.headers };
   if (auth) {
@@ -29,8 +56,25 @@ async function request(path, options = {}, auth = true) {
     if (token) headers.Authorization = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${API_URL}${path}`, { ...options, headers });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), options.timeout ?? REQUEST_TIMEOUT_MS);
+
+  let res;
+  try {
+    res = await fetch(`${API_URL}${path}`, { ...options, headers, signal: controller.signal });
+  } catch (err) {
+    if (err.name === 'AbortError') throw new Error('Request timed out — the server is not responding');
+    throw new Error('Network error — could not reach the server');
+  } finally {
+    clearTimeout(timer);
+  }
+
   const data = await res.json().catch(() => ({}));
+
+  if (auth && res.status === 401) {
+    endSession();
+    throw new Error(SESSION_EXPIRED_MESSAGE);
+  }
   if (!res.ok) throw new Error(data.error || data.message || `HTTP ${res.status}`);
   return data;
 }
@@ -49,6 +93,8 @@ export const adminApi = {
 
   stats: () => request('/api/stats'),
 
+  overview: () => request('/api/admin/overview', { timeout: 30000 }),
+
   getUsers: () => request('/api/admin/users'),
   getUser: (id) => request(`/api/admin/users/${id}`),
   blockUser: (id, blocked) =>
@@ -63,6 +109,7 @@ export const adminApi = {
     request(`/api/deposits/admin/${id}/approve`, { method: 'PATCH', body: JSON.stringify({ approved_amount }) }),
   rejectDeposit: (id, admin_note) =>
     request(`/api/deposits/admin/${id}/reject`, { method: 'PATCH', body: JSON.stringify({ admin_note }) }),
+  getDepositScreenshot: (id) => request(`/api/deposits/admin/${id}/screenshot`, { timeout: 30000 }),
 
   getWithdrawals: (status = 'all') =>
     request(`/api/withdrawals/admin/all${status !== 'all' ? `?status=${status}` : ''}`),

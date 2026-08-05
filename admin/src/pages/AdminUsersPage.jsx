@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { useAdminData } from '../hooks/useAdminData';
+import { useAdminData } from '../context/AdminDataContext';
 import { formatTimeAgo } from '../lib/api';
 
 export default function AdminUsersPage() {
@@ -66,12 +66,12 @@ export default function AdminUsersPage() {
   };
 
   if (loading) return <div className="admin-page"><p className="admin-muted">Loading users...</p></div>;
-  if (error) return <div className="admin-page"><p className="admin-error">{error}</p></div>;
 
   return (
     <div className="admin-page">
       <h2 className="admin-page-title">User Management</h2>
       <p className="admin-page-desc">View all users, block, delete, and manage incoming/outgoing funds.</p>
+      {error && <p className="admin-error">{error}</p>}
 
       {users.length === 0 ? (
         <div className="admin-panel admin-empty-state">No users registered yet. Users appear after signup or deposit.</div>

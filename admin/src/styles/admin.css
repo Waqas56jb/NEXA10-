@@ -236,6 +236,22 @@
 
 .admin-notif-btn svg { width: 22px; height: 22px; }
 
+.admin-refresh-btn {
+  margin-left: auto;
+  margin-right: 12px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid var(--border-dim);
+  color: var(--neon-blue);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-refresh-btn:hover:not(:disabled) { background: rgba(0, 212, 255, 0.2); }
+.admin-refresh-btn:disabled { opacity: 0.55; cursor: default; }
+
 .admin-notif-dot {
   position: absolute;
   top: -4px;
@@ -581,6 +597,14 @@
   padding: 8px;
   font-size: 0.8rem;
   color: var(--neon-blue);
+}
+
+.admin-screenshot-btn--link {
+  background: rgba(0, 212, 255, 0.08);
+}
+
+.admin-screenshot-btn--link:hover {
+  background: rgba(0, 212, 255, 0.16);
 }
 
 .admin-deposit-actions { display: flex; gap: 8px; margin-top: 12px; }

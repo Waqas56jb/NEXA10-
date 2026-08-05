@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { adminApi, getAdminToken, setAdminToken } from '../lib/api';
+import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { adminApi, isAdminTokenValid, setAdminToken } from '../lib/api';
 import Particles from '../components/Particles';
 import BgGrid from '../components/BgGrid';
 
@@ -10,8 +10,10 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const expired = Boolean(location.state?.expired);
 
-  if (getAdminToken()) return <Navigate to="/" replace />;
+  if (isAdminTokenValid()) return <Navigate to="/" replace />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ export default function LoginPage() {
     try {
       const { token } = await adminApi.login(email, password);
       setAdminToken(token);
-      navigate('/');
+      navigate(location.state?.from || '/', { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed');
     } finally {
@@ -37,6 +39,9 @@ export default function LoginPage() {
           <img src="/logo.png" alt="NEXA10" className="admin-login-logo" width={48} height={48} />
           <h1>Admin Panel</h1>
           <p>NEXA10 control center — manage users, deposits & notifications</p>
+          {expired && !error && (
+            <p className="admin-error">Your session expired. Please sign in again.</p>
+          )}
           <div className="admin-field">
             <label htmlFor="admin-email">Email</label>
             <input

@@ -4,7 +4,7 @@ import BgGrid from '../components/BgGrid';
 import PageTop from '../components/PageTop';
 import '../styles/pages/invest.css';
 
-const HOURLY_RATE = 0.0018;
+const HOURLY_RATE = 0.0008;
 const PLAN_HOURS = 2160;
 
 function formatMoney(n) {
@@ -50,7 +50,7 @@ export default function InvestPage() {
             <span className="badge-active">Active</span>
           </div>
           <div className="stats-row">
-            <div className="stat-box stat-box--profit"><span className="stat-label">Profit</span><div className="stat-value">0.18%</div></div>
+            <div className="stat-box stat-box--profit"><span className="stat-label">Profit</span><div className="stat-value">0.08%</div></div>
             <div className="stat-box stat-box--duration"><span className="stat-label">Duration</span><div className="stat-value">2160 hours</div></div>
           </div>
           <div className="range-box">
@@ -67,7 +67,7 @@ export default function InvestPage() {
             <button type="button" className="calc-close" onClick={() => setCalcOpen(false)}>✕</button>
           </div>
           <div className="calc-modal-body">
-            <div className="plan-pill"><strong>NEXA10 Starter</strong> · 0.18% hourly</div>
+            <div className="plan-pill"><strong>NEXA10 Starter</strong> · 0.08% hourly</div>
             <div className="calc-field">
               <label htmlFor="calcAmount">Investment Amount</label>
               <div className="amount-wrap">

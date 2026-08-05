@@ -2,7 +2,7 @@
 -- Adds a settlement timestamp so the server can compute how much to credit
 -- a user every time we read their account while earning is active.
 --
--- Formula (matches Invest page calculator): 0.18% / hour on deposit_total
+-- Formula (matches Invest page calculator): 0.08% / hour on deposit_total
 -- Run this in Supabase SQL Editor (Dashboard → SQL → New query)
 
 ALTER TABLE users

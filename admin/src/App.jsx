@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AdminDataProvider } from './context/AdminDataContext';
 import AdminRoute from './layout/AdminRoute';
 import AdminLayout from './layout/AdminLayout';
 import LoginPage from './pages/LoginPage';
@@ -19,7 +20,13 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route element={<AdminRoute />}>
-          <Route element={<AdminLayout />}>
+          <Route
+            element={
+              <AdminDataProvider>
+                <AdminLayout />
+              </AdminDataProvider>
+            }
+          >
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="deposits" element={<AdminDepositsPage />} />

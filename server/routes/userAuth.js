@@ -9,7 +9,7 @@ const router = Router();
 // ────────────────────────────────────────────────────────────────────────
 // Earnings accrual
 // ────────────────────────────────────────────────────────────────────────
-// 0.18% per hour on deposit_total (matches the Invest "NEXA10 Starter"
+// 0.08% per hour on deposit_total (matches the Invest "NEXA10 Starter"
 // calculator). Accrual is settled lazily: every time the client reads
 // the account or toggles earning, we compute the elapsed seconds since
 // the last settlement and credit balance + earnings_total.
@@ -19,7 +19,7 @@ const router = Router();
 // accrual is silently skipped and a one-shot warning is logged — but
 // register / login / /me never crash because of it.
 
-const HOURLY_RATE = 0.0018;
+const HOURLY_RATE = 0.0008;
 const PER_SECOND_RATE = HOURLY_RATE / 3600;
 
 // Safe-to-select columns (these exist in the original schema).

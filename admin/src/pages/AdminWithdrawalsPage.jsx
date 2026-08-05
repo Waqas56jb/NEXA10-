@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAdminData } from '../hooks/useAdminData';
+import { useAdminData } from '../context/AdminDataContext';
 import { formatTimeAgo } from '../lib/api';
 
 function fmtMoney(n) {
@@ -61,7 +61,6 @@ export default function AdminWithdrawalsPage() {
   };
 
   if (loading) return <div className="admin-page"><p className="admin-muted">Loading withdrawals…</p></div>;
-  if (error) return <div className="admin-page"><p className="admin-error">{error}</p></div>;
 
   return (
     <div className="admin-page">
@@ -69,6 +68,7 @@ export default function AdminWithdrawalsPage() {
       <p className="admin-page-desc">
         Customer balance is deducted at request time. Approving marks the payout as sent. Rejecting refunds the balance automatically.
       </p>
+      {error && <p className="admin-error">{error}</p>}
 
       <div className="admin-tabs">
         {['pending', 'approved', 'rejected', 'all'].map((f) => (

@@ -1,17 +1,40 @@
 import { useState } from 'react';
-import { useAdminData } from '../hooks/useAdminData';
+import { useAdminData } from '../context/AdminDataContext';
 import { formatTimeAgo } from '../lib/api';
 
 export default function AdminDepositsPage() {
   const { deposits, loading, error, actions } = useAdminData();
   const [filter, setFilter] = useState('pending');
   const [preview, setPreview] = useState(null);
+  const [previewState, setPreviewState] = useState('idle');
   const [approveTarget, setApproveTarget] = useState(null);
   const [receivedAmount, setReceivedAmount] = useState('');
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState('');
 
   const filtered = deposits.filter((d) => filter === 'all' || d.status === filter);
+
+  const openScreenshot = async (deposit) => {
+    if (deposit.screenshot) {
+      setPreview(deposit.screenshot);
+      setPreviewState('ready');
+      return;
+    }
+    setPreview(null);
+    setPreviewState('loading');
+    try {
+      const image = await actions.getDepositScreenshot(deposit.id);
+      setPreview(image);
+      setPreviewState(image ? 'ready' : 'empty');
+    } catch {
+      setPreviewState('error');
+    }
+  };
+
+  const closePreview = () => {
+    setPreview(null);
+    setPreviewState('idle');
+  };
 
   const openApprove = (deposit) => {
     setApproveTarget(deposit);
@@ -47,12 +70,12 @@ export default function AdminDepositsPage() {
   };
 
   if (loading) return <div className="admin-page"><p className="admin-muted">Loading deposits...</p></div>;
-  if (error) return <div className="admin-page"><p className="admin-error">{error}</p></div>;
 
   return (
     <div className="admin-page">
       <h2 className="admin-page-title">Deposit Requests</h2>
       <p className="admin-page-desc">Review payment proofs, enter received USDT amount, and credit the user balance.</p>
+      {error && <p className="admin-error">{error}</p>}
 
       <div className="admin-tabs">
         {['pending', 'approved', 'rejected', 'all'].map((f) => (
@@ -81,9 +104,8 @@ export default function AdminDepositsPage() {
                 )}
                 <p className="admin-muted">{d.exchange?.toUpperCase()} · {d.network}</p>
               </div>
-              {d.screenshot && (
-                <button type="button" className="admin-screenshot-btn" onClick={() => setPreview(d.screenshot)}>
-                  <img src={d.screenshot} alt="Payment proof" />
+              {d.hasScreenshot && (
+                <button type="button" className="admin-screenshot-btn admin-screenshot-btn--link" onClick={() => openScreenshot(d)}>
                   <span>View screenshot</span>
                 </button>
               )}
@@ -98,11 +120,14 @@ export default function AdminDepositsPage() {
         </div>
       )}
 
-      {preview && (
-        <div className="admin-modal" onClick={() => setPreview(null)} role="presentation">
+      {previewState !== 'idle' && (
+        <div className="admin-modal" onClick={closePreview} role="presentation">
           <div className="admin-modal-inner" onClick={(e) => e.stopPropagation()}>
-            <img src={preview} alt="Screenshot preview" />
-            <button type="button" className="admin-btn admin-btn--sm" onClick={() => setPreview(null)}>Close</button>
+            {previewState === 'loading' && <p className="admin-muted">Loading screenshot…</p>}
+            {previewState === 'empty' && <p className="admin-muted">No screenshot was uploaded for this deposit.</p>}
+            {previewState === 'error' && <p className="admin-error">Could not load the screenshot. Try again.</p>}
+            {previewState === 'ready' && preview && <img src={preview} alt="Screenshot preview" />}
+            <button type="button" className="admin-btn admin-btn--sm" onClick={closePreview}>Close</button>
           </div>
         </div>
       )}

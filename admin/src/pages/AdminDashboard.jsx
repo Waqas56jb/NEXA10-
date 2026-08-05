@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useAdminData } from '../hooks/useAdminData';
+import { useAdminData } from '../context/AdminDataContext';
 
 export default function AdminDashboard() {
   const {
@@ -32,17 +32,10 @@ export default function AdminDashboard() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="admin-page">
-        <p className="admin-error">{error}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="admin-page">
       <h2 className="admin-page-title">Dashboard Overview</h2>
+      {error && <p className="admin-error">{error}</p>}
       <div className="admin-stats-grid">
         {statCards.map((s) => (
           <Link key={s.label} to={s.to} className={`admin-stat-card admin-stat-card--${s.color}`}>

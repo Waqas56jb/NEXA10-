@@ -5,6 +5,7 @@ export function normalizeUser(u) {
     username: u.username,
     balance: parseFloat(u.balance || 0),
     depositTotal: parseFloat(u.deposit_total ?? 0),
+    earningsTotal: parseFloat(u.earnings_total ?? 0),
     blocked: Boolean(u.blocked),
     createdAt: new Date(u.created_at).getTime(),
   };
@@ -13,14 +14,18 @@ export function normalizeUser(u) {
 export function normalizeDeposit(d) {
   return {
     id: d.id,
+    userId: d.user_id ?? null,
     exchange: d.exchange,
     network: d.network,
     email: d.email,
     username: d.username,
     amount: parseFloat(d.amount),
     approvedAmount: d.approved_amount != null ? parseFloat(d.approved_amount) : null,
-    screenshot: d.screenshot_url,
+    // List responses omit the base64 screenshot; it is loaded on demand.
+    screenshot: d.screenshot_url ?? null,
+    hasScreenshot: d.has_screenshot ?? Boolean(d.screenshot_url),
     status: d.status,
+    adminNote: d.admin_note ?? null,
     createdAt: new Date(d.created_at).getTime(),
   };
 }
